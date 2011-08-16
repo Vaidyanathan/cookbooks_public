@@ -75,8 +75,8 @@ when "x86_64"
 end
 
 default[:rs_utils][:short_hostname]        = nil
-default[:rs_utils][:domain_name]           = ""
-default[:rs_utils][:search_suffix]         = ""
+default[:rs_utils][:domain_name]           = nil
+default[:rs_utils][:search_suffix]         = nil
 
 #
 # Cloud specific attributes
