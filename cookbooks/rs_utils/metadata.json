@@ -15,7 +15,7 @@
       "choice": [
 
       ],
-      "default": null,
+      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_hostname"
@@ -44,7 +44,7 @@
       "choice": [
 
       ],
-      "default": null,
+      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_hostname"
@@ -90,7 +90,7 @@
       "choice": [
 
       ],
-      "default": null,
+      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_hostname"
