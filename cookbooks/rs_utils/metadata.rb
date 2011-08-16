@@ -56,7 +56,6 @@ attribute "rs_utils/short_hostname",
   :display_name => "Short Hostname",
   :description => "The short hostname that you would like this node to have, e.g. kryten",
   :required => "required",
-  :default => "",
   :recipes => [ "rs_utils::setup_hostname" ]
 
 attribute "rs_utils/domain_name",
