@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: hostname
+# Recipe:: setup_hostname
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -45,7 +45,7 @@ def show_host_info
 end
 
 # set hostname from short or long (when domain_name set)
-if "#{node.rs_utils.domain_name}" != "" then
+if node.rs_utils.domain_name != nil || node.rs_utils.domain_name != ''
   hostname = "#{node.rs_utils.short_hostname}.#{node.rs_utils.domain_name}"
   hosts_list = "#{node.rs_utils.short_hostname}.#{node.rs_utils.domain_name} #{node.rs_utils.short_hostname}"
 else
@@ -83,15 +83,17 @@ file "/etc/hostname" do
 end
 
 # Update /etc/resolv.conf
-log 'Configure /etc/resolv.conf'
-nameserver=`cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $2}'`
-if nameserver != "" then
-  nameserver="nameserver #{nameserver}"
-end
-if "#{node.rs_utils.domain_name}" != "" then
+log 'Configuring /etc/resolv.conf.'
+domain = ''
+search = ''
+nameserver = `cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`
+unless node.rs_utils.domain_name.nil || node.rs_utils.domain_name == ''
   domain = "domain #{node.rs_utils.domain_name}"
 end
-if "#{node.rs_utils.search_suffix}" != "" then
+unless nameserver.nil || nameserver == ''
+  nameserver = "nameserver #{nameserver}"
+end
+unless node.rs_utils.search_suffix.nil || node.rs_utils.search_suffix == ''
   search = "search #{node.rs_utils.search_suffix}"
 end
 template "/etc/resolv.conf" do
