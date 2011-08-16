@@ -87,13 +87,13 @@ log 'Configuring /etc/resolv.conf.'
 domain = ''
 search = ''
 nameserver = `cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`
-unless node.rs_utils.domain_name.nil || node.rs_utils.domain_name == ''
+unless node.rs_utils.domain_name.nil? || node.rs_utils.domain_name == ''
   domain = "domain #{node.rs_utils.domain_name}"
 end
-unless nameserver.nil || nameserver == ''
+unless nameserver.nil? || nameserver == ''
   nameserver = "nameserver #{nameserver}"
 end
-unless node.rs_utils.search_suffix.nil || node.rs_utils.search_suffix == ''
+unless node.rs_utils.search_suffix.nil? || node.rs_utils.search_suffix == ''
   search = "search #{node.rs_utils.search_suffix}"
 end
 template "/etc/resolv.conf" do
