@@ -74,9 +74,9 @@ when "x86_64"
   rs_utils[:collectd_lib] = "/usr/lib64/collectd"
 end
 
-default[:rs_utils][:short_hostname]        = nil
-default[:rs_utils][:domain_name]           = nil
-default[:rs_utils][:search_suffix]         = nil
+default[:rs_utils][:short_hostname]        = ""
+default[:rs_utils][:domain_name]           = ""
+default[:rs_utils][:search_suffix]         = ""
 
 #
 # Cloud specific attributes
