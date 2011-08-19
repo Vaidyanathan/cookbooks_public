@@ -22,15 +22,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if "#{node[:rs_utils][:private_ssh_key]}" != ""
+unless node.private_ssh_key.nil? || nnode.private_ssh_key == ''  
 
   log "Install private key"
 
   directory "/root/.ssh" do
     recursive true
   end
+
   template "/root/.ssh/id_rsa" do
     source "id_rsa.erb"
     mode 0600
   end
+
 end
