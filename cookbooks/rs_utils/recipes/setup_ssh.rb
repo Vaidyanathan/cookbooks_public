@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: ssh
+# Recipe:: setup_ssh
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,10 +22,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-unless node.private_ssh_key.nil? || nnode.private_ssh_key == ''  
+unless node.private_ssh_key.nil? || node.private_ssh_key == ''  
 
   log "Install private key"
-
+  private_ssh_key = node.private_ssh_key
+  
   directory "/root/.ssh" do
     recursive true
   end
@@ -33,6 +34,9 @@ unless node.private_ssh_key.nil? || nnode.private_ssh_key == ''
   template "/root/.ssh/id_rsa" do
     source "id_rsa.erb"
     mode 0600
+    variables(
+      :private_ssh_key => private_ssh_key
+    )
   end
 
 end
