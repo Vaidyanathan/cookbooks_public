@@ -24,7 +24,7 @@
 
 log "Install private SSH key."
 
-unless node.rs_utils?("private_ssh_key") || node[":rs_utils"][":private_ssh_key"].empty?
+unless node.rs_utils?("private_ssh_key") || node[:rs_utils][:private_ssh_key].empty?
   
 #if "#{node.rs_utils.private_ssh_key}" != ""
 
