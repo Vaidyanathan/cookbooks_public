@@ -30,7 +30,6 @@
 # Optional attributes
 #
 default[:rs_utils][:process_list]           = ""
-default[:rs_utils][:process_list_ary]       = []
 default[:rs_utils][:private_ssh_key]        = ""
 default[:rs_utils][:process_match_list]     = ""
 default[:rs_utils][:plugin_list]            = ""
