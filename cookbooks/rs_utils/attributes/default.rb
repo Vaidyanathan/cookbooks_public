@@ -30,16 +30,15 @@
 # Optional attributes
 #
 default[:rs_utils][:process_list]           = ""
-
 default[:rs_utils][:process_match_list]     = ""
 default[:rs_utils][:plugin_list]            = ""
 default[:rs_utils][:short_hostname]         = ""
 default[:rs_utils][:domain_name]            = ""
 default[:rs_utils][:search_suffix]          = ""
-default[:rs_utils][:timezone]          = ""
 
-#set_unless[:rs_utils][:timezone]                  = "UTC"
+set_unless[:rs_utils][:timezone]                  = ""
 set_unless[:rs_utils][:private_ssh_key]           = ""
+
 set_unless[:rs_utils][:collectd_share]            = "/usr/share/collectd"
 set_unless[:rs_utils][:mysql_binary_backup_file]  = "/var/run/mysql-binary-backup"
 
