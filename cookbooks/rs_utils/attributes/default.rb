@@ -36,8 +36,8 @@ default[:rs_utils][:short_hostname]         = ""
 default[:rs_utils][:domain_name]            = ""
 default[:rs_utils][:search_suffix]          = ""
 
-set_unless[:rs_utils][:timezone]                  = ""
-set_unless[:rs_utils][:private_ssh_key]           = ""
+default[:rs_utils][:timezone]                  = ""
+default[:rs_utils][:private_ssh_key]           = ""
 
 set_unless[:rs_utils][:collectd_share]            = "/usr/share/collectd"
 set_unless[:rs_utils][:mysql_binary_backup_file]  = "/var/run/mysql-binary-backup"
