@@ -38,5 +38,9 @@ if "#{node.rs_utils.private_ssh_key}" != ""
       :private_ssh_key => "#{node.rs_utils.private_ssh_key}"
     )
   end
+  
+else
 
+  log "No private key provided, skipping."
+  
 end
