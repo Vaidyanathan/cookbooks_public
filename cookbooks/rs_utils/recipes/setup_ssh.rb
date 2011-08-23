@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if ! node.private_ssh_key.nil? || node.private_ssh_key != ''  
+if ! node.private_ssh_key.nil? || node.private_ssh_key != ''
 
   log "Install private key"
   private_ssh_key = node.private_ssh_key
@@ -35,7 +35,7 @@ if ! node.private_ssh_key.nil? || node.private_ssh_key != ''
     source "id_rsa.erb"
     mode 0600
     variables(
-      :private_ssh_key => private_ssh_key
+      :private_ssh_key => "#{private_ssh_key}"
     )
   end
 
