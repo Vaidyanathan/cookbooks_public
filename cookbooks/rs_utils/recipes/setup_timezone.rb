@@ -23,13 +23,16 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Set the Timezone
-if node.rs_utils.timezone
+
+log "Set system timezone."
+
+unless node.rs_utils?("timezone") || node[:rs_utils][:timezone].empty?
 
   link "/etc/localtime" do
-    to "/usr/share/zoneinfo/#{node[:rs_utils][:timezone]}"
+    to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
   end
 
-  log "Timezone set to #{node[:rs_utils][:timezone]}"
+  log "Timezone set to #{node.rs_utils.timezone}"
 
 else 
 
