@@ -24,13 +24,11 @@
 
 log "Install private SSH key."
 
-if ! node.rs_utils.private_ssh_key.nil? and "#{node.rs_utils.private_ssh_key}" != ''
+if ! node.rs_utils.private_ssh_key.nil? || "#{node.rs_utils.private_ssh_key}" != ''
 
   directory "/root/.ssh" do
     recursive true
   end
-
-  log "Copy private key to /root/.ssh/id_rsa."
 
   template "/root/.ssh/id_rsa" do
     source "id_rsa.erb"
