@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: timezone
+# Recipe:: setup_timezone
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,10 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-# == Set the Timezone
-#
-if node[:rs_utils][:timezone]
+# Set the Timezone
+if node.rs_utils.timezone != ""
 
   link "/etc/localtime" do
     to "/usr/share/zoneinfo/#{node[:rs_utils][:timezone]}"
