@@ -22,14 +22,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if "#{node.rs_utils.private_ssh_key}" != ""
+log "Install private SSH key."
 
-  log "Install private key"
-  private_ssh_key = node.private_ssh_key
+unless node.rs_utils?("private_ssh_key") || node[":rs_utils"][":private_ssh_key"].empty?
   
+#if "#{node.rs_utils.private_ssh_key}" != ""
+
   directory "/root/.ssh" do
     recursive true
   end
+
+  log "Copy private key to /root/.ssh/id_rsa."
 
   template "/root/.ssh/id_rsa" do
     source "id_rsa.erb"
@@ -41,6 +44,6 @@ if "#{node.rs_utils.private_ssh_key}" != ""
   
 else
 
-  log "No private key provided, skipping."
+  log "No private SSH key provided, skipping."
   
 end
