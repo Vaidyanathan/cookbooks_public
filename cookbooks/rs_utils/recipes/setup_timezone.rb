@@ -23,7 +23,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Set the Timezone
-if node.rs_utils.timezone != ""
+unless node.rs_utils.timezone.nil? || node.rs_utils.timezone == ''
 
   link "/etc/localtime" do
     to "/usr/share/zoneinfo/#{node[:rs_utils][:timezone]}"
@@ -37,4 +37,3 @@ else
   log "rs_utils/timezone set to localtime.  Not changing /etc/localtime..."
   
 end
-
