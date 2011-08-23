@@ -29,7 +29,7 @@
       "choice": [
 
       ],
-      "default": "UTC",
+      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_timezone",

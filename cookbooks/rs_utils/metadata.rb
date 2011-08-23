@@ -21,7 +21,7 @@ attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
-  :default => "UTC",
+  :default => "",
   :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
   
 attribute "rs_utils/process_list",
