@@ -37,6 +37,6 @@ unless node.rs_utils?("timezone") || node[:rs_utils][:timezone].empty?
 else 
 
   # If this attribute is not set leave unchanged and use localtime
-  log "rs_utils/timezone set to localtime.  Not changing /etc/localtime..."
+  log "rs_utils/timezone unset, not changing /etc/localtime."
   
 end
