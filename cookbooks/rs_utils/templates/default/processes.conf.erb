@@ -4,10 +4,4 @@
 #
 <Plugin processes>
   process "collectd"
-
-<% @procs_match.split.each do |process| %>
-<% p_name, p_regex = split(process, "/") %>
-  processmatch "<%= p_name %>" "<%= p_regex %>"
-<% end %>
-
 </Plugin>
