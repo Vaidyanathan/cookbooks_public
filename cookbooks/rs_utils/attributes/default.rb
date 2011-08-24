@@ -39,7 +39,7 @@ set_unless[:rs_utils][:process_list]              = nil
 set_unless[:rs_utils][:process_match_list]        = nil
 
 # default/base plugin list
-rs_utils[:plugin_list_ary] = [
+set_unless[:rs_utils][:plugin_list_ary] = [
   "cpu",
   "df",
   "disk",
