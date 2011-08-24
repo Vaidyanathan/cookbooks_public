@@ -38,7 +38,7 @@ set_unless[:rs_utils][:collectd_share] = "/usr/share/collectd"
 set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
 
 default[:rs_utils][:plugin_list] = ""
-default[:rs_utils][:plugin_list_ary] = [
+set_unless[:rs_utils][:plugin_list_ary] = [
   "cpu",
   "df",
   "disk",
