@@ -101,6 +101,10 @@ template node[:rs_utils][:collectd_config] do
   backup 5
   source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd")
+  variables(
+    :sketchy_hostname => node.rightscale.servers.sketchy.hostname,
+    :plugins => node.rs_utils.plugin_list_ary
+  )
 end
 
 # == Create plugin conf dir
