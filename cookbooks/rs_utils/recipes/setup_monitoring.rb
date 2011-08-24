@@ -104,7 +104,7 @@ template node[:rs_utils][:collectd_config] do
   variables(
     :sketchy_hostname => node.rightscale.servers.sketchy.hostname,
     :plugins => node.rs_utils.plugin_list_ary,
-    :instance_uuid => node.instance.uuid,
+    :instance_uuid => node.rightscale.instance_uuid,
     :collectd_include_dir => node.rs_utils.collectd_plugin_dir
   )
 end
