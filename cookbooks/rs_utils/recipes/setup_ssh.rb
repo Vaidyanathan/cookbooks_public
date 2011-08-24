@@ -30,6 +30,7 @@ if node.has_key? :rs_utils and node.rs_utils.has_key? :private_ssh_key and !(nod
     recursive true
   end
 
+  log "Copying key to /root/.ssh/id_rsa."
   template "/root/.ssh/id_rsa" do
     source "id_rsa.erb"
     mode 0600
