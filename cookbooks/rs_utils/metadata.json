@@ -103,7 +103,7 @@
       "choice": [
 
       ],
-      "default": "",
+      "default": null,
       "type": "string",
       "recipes": [
         "rs_utils::setup_ssh"
