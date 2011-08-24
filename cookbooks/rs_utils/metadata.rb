@@ -4,7 +4,7 @@ license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..'
 description      "Enable instance Monitoring and logging in the RightScale dashboard."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
-
+ 
 recipe "rs_utils::default", "Install utilities"
 recipe "rs_utils::setup_logging", "Install and configure RightScale dashboard logging."
 recipe "rs_utils::setup_monitoring", "Install and configure RightScale dashboard monitoring."
@@ -17,11 +17,12 @@ recipe "rs_utils::install_tools", "Install RightScale instance tools"
 recipe "rs_utils::install_mysql_collectd_plugin", "Install mysql collectd plugin"
 recipe "rs_utils::install_file_stats_collectd_plugin", "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting."
 
+
 attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
-  :default => "",
+  :default => "UTC",
   :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
   
 attribute "rs_utils/process_list",
@@ -41,7 +42,7 @@ attribute "rs_utils/process_match_list",
 attribute "rs_utils/private_ssh_key",
  :display_name => "Private SSH Key",
  :description => "The private SSH key of another instance that gets installed on this instance.  It allows this instance to SSH into another instance to update the configuration files. Select input type 'key' from the dropdown and then select an SSH key that is installed on the other instance.  Ex: key:my_key",
- :required => "optional",
+ :required => "required",
  :default => nil,
  :recipes => [ "rs_utils::setup_ssh" ]
 
@@ -56,13 +57,14 @@ attribute "rs_utils/short_hostname",
   :display_name => "Short Hostname",
   :description => "The short hostname that you would like this node to have, e.g. kryten",
   :required => "required",
+  :default => nil,
   :recipes => [ "rs_utils::setup_hostname" ]
 
 attribute "rs_utils/domain_name",
   :display_name => "Domain Name",
   :description => "The domain name that you would like this node to have, e.g. domain.suf",
   :required => "optional",
-  :default => "",
+  :default => "" ,
   :recipes => [ "rs_utils::setup_hostname" ]
 
 attribute "rs_utils/search_suffix",
