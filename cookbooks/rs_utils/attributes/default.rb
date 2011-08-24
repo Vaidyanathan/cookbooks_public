@@ -50,8 +50,8 @@ set_unless[:rs_utils][:plugin_list_ary] = [
   "ping"
 ]
 
-default[:rs_utils][:process_list] = ""
-default[:rs_utils][:process_list_ary] = []
+set_unless[:rs_utils][:process_list] = ""
+set_unless[:rs_utils][:process_list_ary] = [ "init" ]
 
 #
 # Setup Distro dependent variables
