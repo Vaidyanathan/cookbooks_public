@@ -103,7 +103,8 @@ template node[:rs_utils][:collectd_config] do
   notifies :restart, resources(:service => "collectd")
   variables(
     :sketchy_hostname => node.rightscale.servers.sketchy.hostname,
-    :plugins => node.rs_utils.plugin_list_ary
+    :plugins => node.rs_utils.plugin_list_ary,
+    :instance_uuid => node.instance.uuid
   )
 end
 
