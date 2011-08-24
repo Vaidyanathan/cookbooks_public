@@ -39,7 +39,7 @@ set_unless[:rs_utils][:process_list]              = nil
 set_unless[:rs_utils][:process_match_list]        = nil
 
 # default/base plugin list
-set_unless[:rs_utils][:plugin_list_ary] = [
+default[:rs_utils][:plugin_list_ary] = [
   "cpu",
   "df",
   "disk",
@@ -82,4 +82,3 @@ if cloud
     rs_utils[:enable_remote_logging] = true
   end
 end
-
