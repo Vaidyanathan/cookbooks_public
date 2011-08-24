@@ -129,15 +129,15 @@ end
 # == Monitor Processes from Script Input 
 #
 # Write the process file into the include directory from template.
-template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
-  backup false
-  source "processes.conf.erb"
-  notifies :restart, resources(:service => "collectd")
-  variables(
-    :monitor_procs => node.rs_utils.process_list_ary,
-    :procs_match => node.rs_utils.process_match_list
-  )
-end
+#template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
+#  backup false
+#  source "processes.conf.erb"
+#  notifies :restart, resources(:service => "collectd")
+#  variables(
+#    :monitor_procs => node.rs_utils.process_list_ary,
+#    :procs_match => node.rs_utils.process_match_list
+#  )
+#end
 
 # Patch collectd init script, so it uses collectdmon.  
 # Only needed for CentOS, Ubuntu already does this out of the box.
