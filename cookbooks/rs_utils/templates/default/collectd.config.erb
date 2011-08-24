@@ -23,9 +23,6 @@ LoadPlugin interface
   Interface "eth0"
 </Plugin>
 
-<% node[:rs_utils][:plugin_list_ary].each do |plugin| -%>
-LoadPlugin <%= plugin %>
-<% end %>
 
 #this is where other configs go (e.g. mysql.conf)
 Include "<%= node[:rs_utils][:collectd_plugin_dir] %>/*"
