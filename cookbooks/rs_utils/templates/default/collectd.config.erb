@@ -28,4 +28,4 @@ LoadPlugin <%= plugin %>
 <% end %>
 
 #this is where other configs go (e.g. mysql.conf)
-Include "<%= node[:rs_utils][:collectd_plugin_dir] %>/*"
+Include "<%= @collectd_include_dir %>/*"
