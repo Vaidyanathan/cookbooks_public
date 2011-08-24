@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Chef::Log.info "I bet this isn't nil: #{node.rs_utils.private_ssh_key}"
+#Chef::Log.info "I bet this isn't nil: #{node.rs_utils.private_ssh_key}"
 
 log "Install private SSH key."
 
