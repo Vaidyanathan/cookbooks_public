@@ -24,7 +24,7 @@
 
 log "Install private SSH key."
 
-if node.rs_utils.has_key? :private_ssh_key and !(node.rs_utils.private_ssh_key.nil or node.rs_utils.private_ssh_key.empty?)
+if node.has_key? :rs_utils and node.rs_utils.has_key? :private_ssh_key and !(node.rs_utils.private_ssh_key.nil? or node.rs_utils.private_ssh_key.empty?)
 
   directory "/root/.ssh" do
     recursive true
