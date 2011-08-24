@@ -23,7 +23,7 @@ LoadPlugin interface
   Interface "eth0"
 </Plugin>
 
-<% @node[:rs_utils][:plugin_list_ary].each do |plugin| %>
+<% node[:rs_utils][:plugin_list_ary].each do |plugin| -%>
 LoadPlugin <%= plugin %>
 <% end %>
 
