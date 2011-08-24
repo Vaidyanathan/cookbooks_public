@@ -47,7 +47,6 @@ set_unless[:rs_utils][:plugin_list_ary] = [
   "processes",
   "swap",
   "users",
-  "ping"
 ]
 
 set_unless[:rs_utils][:process_list] = ""
