@@ -4,13 +4,6 @@
 #
 <Plugin processes>
   process "collectd"
-<% node[:rs_utils][:process_list_ary].each do |process| %>
-  process "<%= process %>"
-<% end %>
 
-<% node[:rs_utils][:process_match_list].split.each do |process| %>
-<% p_name, p_regex = split(process, "/") %>
-  processmatch "<%= p_name %>" "<%= p_regex %>"
-<% end %>
 
 </Plugin>
