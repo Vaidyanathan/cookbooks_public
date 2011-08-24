@@ -29,13 +29,13 @@
 set_unless[:rs_utils][:collectd_share]            = "/usr/share/collectd"
 set_unless[:rs_utils][:mysql_binary_backup_file]  = "/var/run/mysql-binary-backup"
 
-default[:rs_utils][:plugin_list]                  = ""
 default[:rs_utils][:short_hostname]               = ""
 default[:rs_utils][:domain_name]                  = ""
 default[:rs_utils][:search_suffix]                = ""
 set_unless[:rs_utils][:timezone]                  = nil
 set_unless[:rs_utils][:private_ssh_key]           = nil
 set_unless[:rs_utils][:process_list]              = nil
+set_unless[:rs_utils][:plugin_list]               = nil
 set_unless[:rs_utils][:process_match_list]        = nil
 
 # default/base plugin list
@@ -49,6 +49,10 @@ default[:rs_utils][:plugin_list_ary] = [
   "swap",
   "users",
   "ping"
+]
+
+default[:rs_utils][:process_list_ary] = [
+  "init"
 ]
 
 #
