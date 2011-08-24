@@ -73,6 +73,9 @@ template node.rs_utils.collectd_config do
   backup false
   source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd")
+  variables(
+    :plugins_list => node.rs_utils.plugin_list_ary
+  )
 end
 
 # Configure process monitoring
