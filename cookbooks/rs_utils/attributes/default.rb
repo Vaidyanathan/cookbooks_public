@@ -34,8 +34,8 @@ default[:rs_utils][:domain_name]                  = ""
 default[:rs_utils][:search_suffix]                = ""
 set_unless[:rs_utils][:timezone]                  = nil
 set_unless[:rs_utils][:private_ssh_key]           = nil
-set_unless[:rs_utils][:process_list]              = nil
-set_unless[:rs_utils][:plugin_list]               = nil
+set_unless[:rs_utils][:process_list]              = ""
+default[:rs_utils][:plugin_list]                  = ""
 set_unless[:rs_utils][:process_match_list]        = nil
 
 # default/base plugin list
@@ -55,9 +55,7 @@ default[:rs_utils][:process_list_ary] = [
   "init"
 ]
 
-#
 # Setup Distro dependent variables
-#
 case platform
 when "redhat","centos","fedora","suse"
   rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog"
@@ -76,9 +74,7 @@ when "x86_64"
   rs_utils[:collectd_lib] = "/usr/lib64/collectd"
 end
 
-#
 # Cloud specific attributes
-#
 rs_utils[:enable_remote_logging] = false
 if cloud
   case cloud[:provider]
