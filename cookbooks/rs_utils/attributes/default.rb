@@ -73,6 +73,8 @@ when "x86_64"
   rs_utils[:collectd_lib] = "/usr/lib64/collectd"
 end
 
+set_unless[:rs_utils][:domain]           = ""
+
 default[:rs_utils][:short_hostname]        = nil
 default[:rs_utils][:domain_name]           = ""
 default[:rs_utils][:search_suffix]         = ""
