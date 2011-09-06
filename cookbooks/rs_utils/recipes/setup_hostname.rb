@@ -88,27 +88,20 @@ end
 #
 log 'Configuring /etc/resolv.conf.'
 
-domain = nil
-search = nil
-nameserver = nil
+if !node.rs_utils.search_suffix.nil? or node.rs_utils.search_suffix != ""
+  search = "search #{node.rs_utils.search_suffix}"
+else
+  search = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+end
 
 # assumes the minimum option(s) in resolv.conf is a namserver
 nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`}"
 
-if !node.rs_utils.search_suffix.nil?
-  search = "search #{node.rs_utils.search_suffix}"
-else
-  search = `cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`
-  if search != ""
-    search = "search #{search}" 
-  end
-end
-
 if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != ""
-   domain = "domain #{node.domain}"
+   domain = "domain #{node.rs_utils.domain_name}"
 else
-  domain = `cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`
-  if domain != ""
+  domain = node.domain
+  if domain != "" and search != ""
     domain = "domain #{domain}"
   end
 end
@@ -116,12 +109,11 @@ end
 template "/etc/resolv.conf" do
   source "resolv.conf.erb"
   variables(
-    :nameserver => nameserver,
-    :domain => domain,
-    :search => search
+    :nameserver => "#{nameserver}",
+    :domain => "#{domain}",
+    :search => "#{search}"
     )
 end
-
 
 # Call hostname command
 log 'Setting hostname.'
@@ -141,7 +133,7 @@ else
 end
 
 # Call domainname command
-if node.rs_utils.domain_name
+if !node.rs_utils.domain_name.nil? || node.rs_utils.domain_name != ""
   log 'Running domainname'
   bash "set_domainname" do
     code <<-EOH
