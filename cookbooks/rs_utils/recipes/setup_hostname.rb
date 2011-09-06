@@ -94,16 +94,20 @@ nameserver = nil
 # assumes the minimum option(s) in resolv.conf is a namserver
 nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`}"
 
-if node.rs_utils.search_suffix
+if !node.rs_utils.search_suffix.nil?
   search = "search #{node.rs_utils.search_suffix}"
 else
-  search  = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+  search = `cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`
+  if search != ""
+    search = "search #{search}" 
 end
 
-if node.rs_utils.domain_name
-  domain = "domain #{node.rs_utils.domain_name}"
+if !node.rs_utils.domain_name.nil?
+  node.domain
 else
-  domain = "domain #{`cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`}"
+  domain = `cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`
+  if domain != ""
+    domain = "domain #{domain}" 
 end
 
 template "/etc/resolv.conf" do
