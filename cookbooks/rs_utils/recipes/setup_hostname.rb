@@ -123,7 +123,7 @@ else
 end
 
 # Call domainname command
-if "#{node.rs_utils.domain_name}" != ""
+if node.rs_utils.domain_name
   log 'Running domainname'
   bash "set_domainname" do
     code <<-EOH
