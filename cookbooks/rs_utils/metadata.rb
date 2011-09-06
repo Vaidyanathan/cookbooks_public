@@ -63,12 +63,10 @@ attribute "rs_utils/domain_name",
   :display_name => "Domain Name",
   :description => "The domain name that you would like this node to have, e.g. domain.suf",
   :required => "optional",
-  :default => "" ,
   :recipes => [ "rs_utils::setup_hostname" ]
 
 attribute "rs_utils/search_suffix",
   :display_name => "Domain Search Suffix",
   :description => "The domain search suffix you would like this node to have, e.g. domain.suf.",
   :required => "optional",
-  :default => "",
   :recipes => [ "rs_utils::setup_hostname" ]

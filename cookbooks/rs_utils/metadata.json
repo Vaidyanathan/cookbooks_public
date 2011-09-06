@@ -1,13 +1,8 @@
 {
-  "maintainer": "RightScale, Inc.",
-  "replacing": {
+  "dependencies": {
   },
+  "name": "rs_utils",
   "maintainer_email": "support@rightscale.com",
-  "groupings": {
-  },
-  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
-  "recommendations": {
-  },
   "attributes": {
     "rs_utils/search_suffix": {
       "required": "optional",
@@ -15,7 +10,6 @@
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_hostname"
@@ -44,7 +38,6 @@
       "choice": [
 
       ],
-      "default": "",
       "type": "string",
       "recipes": [
         "rs_utils::setup_hostname"
@@ -126,17 +119,16 @@
       "display_name": "MySQL binary file"
     }
   },
-  "platforms": {
-  },
+  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
   "suggestions": {
   },
-  "dependencies": {
+  "platforms": {
   },
-  "version": "0.0.1",
-  "conflicting": {
-  },
-  "name": "rs_utils",
+  "maintainer": "RightScale, Inc.",
   "long_description": "= DESCRIPTION:\n\nBase recipes used to setup services used by the RightScale Cloud Management Platform\n\n= REQUIREMENTS:\n\nRequires a VM launched from a RightScale managed RightImage\n\n= USAGE:\n\nRun the rs_utils::default recipe to perform common server configuration steps  \nsuch as enabling monitoring and logging on the RightScale Dashboard.\n\n= DEFINITIONS\n\nrs_utils_enable_collectd_plugin\n---------------------------------------------\n* Accepts only one parameter \"name\" which is the name of the collectd plugin to enable\n* The plugin name is added to node[:rs_utils][:plugin_list_ary] which is used to create the list of plugins in the /etc/collectd/collectd.conf file\n* The node[:rs_utils][:plugin_list_ary] will have any plugins listed in node[:rs_utils][:plugin_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_enable_collectd_plugin \"curl_json\"```\n\n\nrs_utils_monitor_process\n------------------------------------\n* Accepts only one parameter, \"name\" which is the name of the process to monitor\n* The process name is added to node[:rs_utils][:process_list_ary] which is used to create the list of processes in the /etc/collectd/conf/processes.conf file\n* The node[:rs_utils][:process_list_ary] will have any processes listed in node[:rs_utils][:process_list] merged into it.  This is to support any legacy recipes as well as allow the input to be manipulated in the RS dashboard.\n\nSyntax:\n\n```rs_utils_monitor_process \"nginx\"```\n\n",
+  "version": "0.0.1",
+  "recommendations": {
+  },
   "recipes": {
     "rs_utils::setup_server_tags": "Sets machine tags common to all RightScale managed servers.",
     "rs_utils::setup_monitoring": "Install and configure RightScale dashboard monitoring.",
@@ -150,7 +142,13 @@
     "rs_utils::setup_hostname": "Set system hostname.",
     "rs_utils::setup_ssh": "Installs private ssh key."
   },
-  "providing": {
+  "groupings": {
   },
-  "license": "Copyright (c) 2011 RightScale, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Enable instance Monitoring and logging in the RightScale dashboard.",
+  "providing": {
+  }
 }
