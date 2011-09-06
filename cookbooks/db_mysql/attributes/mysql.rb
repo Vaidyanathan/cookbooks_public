@@ -47,7 +47,7 @@ set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 
 if !node.cloud.nil?
-  default[:db_mysql][:bind_address] = @node[:cloud][:private_ips][0]
+  default[:db_mysql][:bind_address] = "#{node[:cloud][:private_ips][0]}"
 end
 
 set_unless[:db_mysql][:dump][:schema_name] = ""
