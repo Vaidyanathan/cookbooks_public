@@ -94,7 +94,7 @@ nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserve
 if !node.rs_utils.search_suffix.nil? or node.rs_utils.search_suffix != ""
   search = "search #{node.rs_utils.search_suffix}"
 else
-  current_search = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+  current_search = "#{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
   if current_search != ""
     search = "search #{current_search}"
   end
