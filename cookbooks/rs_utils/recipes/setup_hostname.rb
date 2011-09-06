@@ -94,15 +94,18 @@ nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserve
 if !node.rs_utils.search_suffix.nil? or node.rs_utils.search_suffix != ""
   search = "search #{node.rs_utils.search_suffix}"
 else
-  search = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+  current_search = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+  if current_search != ""
+    search = "search #{current_search}"
+  end
 end
 
 if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != ""
    domain = "domain #{node.rs_utils.domain_name}"
 else
-  domain = node.domain
-  if domain != "" and search != ""
-    domain = "domain #{domain}"
+  current_domain = node.domain
+  if current_domain != "" and search != ""
+    domain = "domain #{current_domain}"
   end
 end
 
