@@ -171,7 +171,7 @@ end
 log 'Setting hostname tag.'
 bash "set_node_hostname_tag" do
   code <<-EOH
-    type -P rs_tag &>/dev/null && rs_tag --add "node:hostname=#{hostname}"
+    if type -P rs_tag &>/dev/null; then rs_tag --add "node:hostname=#{hostname}"; fi
   EOH
 end
   
