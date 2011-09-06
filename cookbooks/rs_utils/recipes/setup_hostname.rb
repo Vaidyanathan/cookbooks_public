@@ -89,12 +89,12 @@ end
 log 'Configuring /etc/resolv.conf.'
 
 # assumes the minimum option(s) in resolv.conf is a namserver
-nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`}"
+nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}' | tr -d '\n'`}"
 
 if !node.rs_utils.search_suffix.nil? or node.rs_utils.search_suffix != ""
   search = "search #{node.rs_utils.search_suffix}"
 else
-  current_search = "#{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
+  current_search = "#{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}' | tr -d '\n'`}"
   if current_search != ""
     search = "search #{current_search}"
   end
