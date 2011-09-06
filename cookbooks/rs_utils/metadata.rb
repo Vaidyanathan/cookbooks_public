@@ -61,7 +61,7 @@ attribute "rs_utils/short_hostname",
 
 attribute "rs_utils/domain_name",
   :display_name => "Domain Name",
-  :description => "The domain name that you would like this node to have, e.g. domain.suf",
+  :description => "The domain name that you would like this node to have, e.g. domain.suf. Note: Only set a valid domain name to satisfy the resolution of a FQDN; use ignore:ignore for no domain name.",
   :required => "optional",
   :recipes => [ "rs_utils::setup_hostname" ]
 
