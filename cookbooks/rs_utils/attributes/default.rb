@@ -21,28 +21,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#
-# RightScale Enviroment Attributes.
-# These are needed by all RightScale Cookbooks.  rs_utils should be included in all server templates
-# so these attributes are declared here.
-
 default[:rs_utils][:short_hostname]        = 'localhost'
 default[:rs_utils][:domain_name]           = nil
 default[:rs_utils][:search_suffix]         = nil
 
-#
-# Optional attributes
-#
-set_unless[:rs_utils][:timezone] = "UTC"    
-set_unless[:rs_utils][:process_list] = ""
-set_unless[:rs_utils][:process_match_list] = ""   
-set_unless[:rs_utils][:private_ssh_key] = ""
-set_unless[:rs_utils][:collectd_share] = "/usr/share/collectd"
-
-set_unless[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
+default[:rs_utils][:timezone] = nil
+#default[:rs_utils][:timezone] = "UTC"
+    
+default[:rs_utils][:process_list] = ""
+default[rs_utils][:process_match_list] = ""   
+default[:rs_utils][:private_ssh_key] = ""
+default[:rs_utils][:collectd_share] = "/usr/share/collectd"
+default[:rs_utils][:mysql_binary_backup_file] = "/var/run/mysql-binary-backup"
 
 default[:rs_utils][:plugin_list] = ""
-set_unless[:rs_utils][:plugin_list_ary] = [
+default[:rs_utils][:plugin_list_ary] = [
   "cpu",
   "df",
   "disk",
@@ -53,8 +46,8 @@ set_unless[:rs_utils][:plugin_list_ary] = [
   "users",
 ]
 
-set_unless[:rs_utils][:process_list] = ""
-set_unless[:rs_utils][:process_list_ary] = [ "init" ]
+default[:rs_utils][:process_list] = ""
+default[:rs_utils][:process_list_ary] = [ "init" ]
 
 #
 # Setup Distro dependent variables
