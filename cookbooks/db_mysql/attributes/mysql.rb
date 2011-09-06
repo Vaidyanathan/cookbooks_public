@@ -46,7 +46,7 @@ set_unless[:db_mysql][:tmpdir] = "/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 
-if !node.cloud.private_ips.nil?
+if node.has_key?('cloud')
   default[:db_mysql][:bind_address] = "#{@node.cloud.private_ips[0]}"
 else
   default[:db_mysql][:bind_address] = "127.0.0.1"
