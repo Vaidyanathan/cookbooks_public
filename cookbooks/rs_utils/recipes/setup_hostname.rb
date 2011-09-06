@@ -100,6 +100,7 @@ else
   search = `cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`
   if search != ""
     search = "search #{search}" 
+  end
 end
 
 if !node.rs_utils.domain_name.nil?
@@ -107,7 +108,8 @@ if !node.rs_utils.domain_name.nil?
 else
   domain = `cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`
   if domain != ""
-    domain = "domain #{domain}" 
+    domain = "domain #{domain}"
+  end
 end
 
 template "/etc/resolv.conf" do
