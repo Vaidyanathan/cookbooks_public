@@ -103,7 +103,7 @@ else
   end
 end
 
-if !node.rs_utils.domain_name.nil? || node.rs_utils.domain_name != ""
+if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != ""
    domain = "domain #{node.domain}"
 else
   domain = `cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`
