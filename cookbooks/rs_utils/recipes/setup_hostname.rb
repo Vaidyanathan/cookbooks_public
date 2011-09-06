@@ -42,6 +42,7 @@ def show_host_info
   log "Short host name (cut from first dot of hostname): #{`hostname -s` == '' ? '<none>' : `hostname -s`}"
   log "Domain of hostname: #{`domainname` == '' ? '<none>' : `domainname`}"
   log "FQDN of host: #{`hostname -f` == '' ? '<none>' : `hostname -f`}"
+  log "IP addresses for the hostname: #{`hostname -i` == '' ? '<none>' : `hostname -i`}"
 end
 
 # set hostname from short or long (when domain_name set)
@@ -183,5 +184,6 @@ ruby_block "show_new_host_info" do
     Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s` == '' ? '<none>' : `hostname -s`}")
     Chef::Log.info("Domain of hostname: #{`domainname` == '' ? '<none>' : `domainname`}")
     Chef::Log.info("FQDN of host: #{`hostname -f` == '' ? '<none>' : `hostname -f`}")
+    Chef::Log.info("IP addresses for the hostname: #{`hostname -i` == '' ? '<none>' : `hostname -i`}")
   end
 end
