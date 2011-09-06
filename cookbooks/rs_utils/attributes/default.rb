@@ -27,7 +27,7 @@
 # so these attributes are declared here.
 
 default[:rs_utils][:short_hostname]        = 'localhost'
-default[:rs_utils][:domain_name]           = 'localhost.localdomain'
+default[:rs_utils][:domain_name]           = nil
 default[:rs_utils][:search_suffix]         = nil
 
 #
