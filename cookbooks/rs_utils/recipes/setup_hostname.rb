@@ -82,20 +82,30 @@ file "/etc/hostname" do
   action :create
 end
 
+#
 # Update /etc/resolv.conf
+#
 log 'Configuring /etc/resolv.conf.'
-domain = ''
-search = ''
-nameserver = `cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`
-unless node.rs_utils.domain_name.nil? || node.rs_utils.domain_name == ''
-  domain = "domain #{node.rs_utils.domain_name}"
-end
-unless nameserver.nil? || nameserver == ''
-  nameserver = "nameserver #{nameserver}"
-end
-unless node.rs_utils.search_suffix.nil? || node.rs_utils.search_suffix == ''
+
+domain = nil
+search = nil
+nameserver = nil
+
+# assumes the minimum option(s) in resolv.conf is a namserver
+nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}'`}"
+
+if node.rs_utils.search_suffix
   search = "search #{node.rs_utils.search_suffix}"
+else
+  search  = "search #{`cat /etc/resolv.conf | grep -v '^#' | grep search | awk '{print $2}'`}"
 end
+
+if node.rs_utils.domain_name
+  domain = "domain #{node.rs_utils.domain_name}"
+else
+  domain = "domain #{`cat /etc/resolv.conf | grep -v '^#' | grep domain | awk '{print $2}'`}"
+end
+
 template "/etc/resolv.conf" do
   source "resolv.conf.erb"
   variables(
@@ -104,6 +114,7 @@ template "/etc/resolv.conf" do
     :search => search
     )
 end
+
 
 # Call hostname command
 log 'Setting hostname.'
