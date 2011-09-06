@@ -74,7 +74,8 @@ end
 # Cloud specific attributes
 #
 rs_utils[:enable_remote_logging] = false
-if cloud
+
+if node.has_key?('cloud')
   case cloud[:provider]
   when "ec2"
     rs_utils[:enable_remote_logging] = true
