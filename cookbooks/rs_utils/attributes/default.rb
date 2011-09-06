@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 default[:rs_utils][:short_hostname]        = 'localhost'
-default[:rs_utils][:domain_name]           = nil
+default[:rs_utils][:domain_name]           = 'localdomain'
 default[:rs_utils][:search_suffix]         = nil
 
 default[:rs_utils][:timezone] = nil
