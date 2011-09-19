@@ -22,21 +22,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Set the Timezone
-
 log "Set system timezone."
 
-unless node.rs_utils?("timezone") || node[:rs_utils][:timezone].empty?
-
+if node.has_key? :rs_utils and node.rs_utils.has_key? :timezone and !(node.rs_utils.timezone.nil? or node.rs_utils.timezone.empty?)
   link "/etc/localtime" do
     to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
   end
-
   log "Timezone set to #{node.rs_utils.timezone}"
-
 else 
-
   # If this attribute is not set leave unchanged and use localtime
   log "rs_utils/timezone unset, not changing /etc/localtime."
-  
 end
