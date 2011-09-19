@@ -100,14 +100,9 @@ else
   end
 end
 
-if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != ""
+if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != "" and search != ""
    domain = "domain #{node.rs_utils.domain_name}"
 else
-  current_domain = node.domain
-  if current_domain != "" and search != ""
-    domain = "domain #{current_domain}"
-  end
-end
 
 template "/etc/resolv.conf" do
   source "resolv.conf.erb"
