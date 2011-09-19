@@ -27,17 +27,15 @@ package "postfix"
 service "postfix"
 
 # == Update main.cf (if needed)
-#
 # We make the changes needed for centos, but using the default main.cf 
 # config everywhere else
-#
 cookbook_file "/etc/postfix/main.cf" do
   only_if { node.platform == 'centos' }
   backup 5
   source "postfix.main.cf"
   user 'postfix'
   mode '0600'
-  notifies :restart, resources(:service => "postfix") :delayed
+  notifies :restart, resources(:service => "postfix"), :delayed
 end
 
 directory "/var/spool/oldmail" do
