@@ -36,13 +36,13 @@ end
 
 def show_host_info
   # Display current hostname values in log
-  log "Hostname: #{`hostname` == '' ? '<none>' : `hostname`}"
-  log "Network node hostname: #{`uname -n` == '' ? '<none>' : `uname -n`}"
-  log "Alias names of host: #{`hostname -a` == '' ? '<none>' : `hostname -a`}"
-  log "Short host name (cut from first dot of hostname): #{`hostname -s` == '' ? '<none>' : `hostname -s`}"
-  log "Domain of hostname: #{`domainname` == '' ? '<none>' : `domainname`}"
-  log "FQDN of host: #{`hostname -f` == '' ? '<none>' : `hostname -f`}"
-  log "IP addresses for the hostname: #{`hostname -i` == '' ? '<none>' : `hostname -i`}"
+  log "Hostname: #{`hostname`.strip == '' ? '<none>' : `hostname`.strip}"
+  log "Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}"
+  log "Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}"
+  log "Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}"
+  log "Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}"
+  log "FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}"
+  log "IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}"
 end
 
 # set hostname from short or long (when domain_name set)
