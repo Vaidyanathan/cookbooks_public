@@ -28,8 +28,8 @@ if node.has_key? :rs_utils and node.rs_utils.has_key? :timezone and !(node.rs_ut
   link "/etc/localtime" do
     to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
   end
-  log "Timezone set to #{node.rs_utils.timezone}"
+  log "Timezone set to #{node.rs_utils.timezone} (#{Time.now.strftime("%z %Z")})."
 else 
-  # If this attribute is not set leave unchanged and use localtime
-  log "rs_utils/timezone unset, not changing /etc/localtime."
+  # If this attribute is not set leave unchanged
+  log "Attrbute timezone unset, skipping."
 end
