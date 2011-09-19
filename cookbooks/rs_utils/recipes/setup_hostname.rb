@@ -175,12 +175,12 @@ ruby_block "show_new_host_info" do
   block do
     # show new host values from system
     Chef::Log.info("== New host/node information ==")
-    Chef::Log.info("Hostname: #{`hostname` == '' ? '<none>' : `hostname`}")
-    Chef::Log.info("Network node hostname: #{`uname -n` == '' ? '<none>' : `uname -n`}")
-    Chef::Log.info("Alias names of host: #{`hostname -a` == '' ? '<none>' : `hostname -a`}")
-    Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s` == '' ? '<none>' : `hostname -s`}")
-    Chef::Log.info("Domain of hostname: #{`domainname` == '' ? '<none>' : `domainname`}")
-    Chef::Log.info("FQDN of host: #{`hostname -f` == '' ? '<none>' : `hostname -f`}")
-    Chef::Log.info("IP addresses for the hostname: #{`hostname -i` == '' ? '<none>' : `hostname -i`}")
+    Chef::Log.info("Hostname: #{`hostname`.strip == '' ? '<none>' : `hostname`.strip}")
+    Chef::Log.info("Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}")
+    Chef::Log.info("Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}")
+    Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}")
+    Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
+    Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
+    Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
   end
 end
