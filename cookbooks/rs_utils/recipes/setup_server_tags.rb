@@ -22,6 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+log "Setup RightScale tags."
+
 if !node.has_key? :rightscale and !node.has_key? :cloud
   log 'Not attached to RightScale, skipping'
   return
