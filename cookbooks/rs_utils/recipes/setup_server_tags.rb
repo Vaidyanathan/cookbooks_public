@@ -24,7 +24,7 @@
 
 if !node.has_key? :rightscale and !node.has_key? :cloud
   log 'Not attached to RightScale, skipping'
-  exit
+  return
 end
 
 # RightScale unique identifier
