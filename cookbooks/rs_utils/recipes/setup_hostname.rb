@@ -102,7 +102,7 @@ end
 
 if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != "" and search != ""
    domain = "domain #{node.rs_utils.domain_name}"
-else
+end
 
 template "/etc/resolv.conf" do
   source "resolv.conf.erb"
