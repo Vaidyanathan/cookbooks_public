@@ -31,7 +31,7 @@ service "postfix"
 # config everywhere else
 cookbook_file "/etc/postfix/main.cf" do
   only_if { node.platform == 'centos' }
-  backup 5
+  mode "0770"
   source "postfix.main.cf"
   notifies :restart, resources(:service => "postfix"), :delayed
 end
