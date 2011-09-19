@@ -91,6 +91,7 @@ log 'Configuring /etc/resolv.conf.'
 # assumes the minimum option(s) in resolv.conf is a namserver
 nameserver = "nameserver #{`cat /etc/resolv.conf | grep -v '^#' | grep nameserver | awk '{print $2}' | tr -d '\n'`}"
 
+search = false
 if !node.rs_utils.search_suffix.nil? and node.rs_utils.search_suffix != ""
   search = "search #{node.rs_utils.search_suffix}"
 else
@@ -100,7 +101,7 @@ else
   end
 end
 
-if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != "" and search != ""
+if !node.rs_utils.domain_name.nil? and node.rs_utils.domain_name != "" and !search
    domain = "domain #{node.rs_utils.domain_name}"
 end
 
