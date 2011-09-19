@@ -22,7 +22,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-exit unless node.has_key? :rightscale and node.has_key? :cloud
+if !node.has_key? :rightscale and !node.has_key? :cloud
+  log 'Not attached to RightScale, skipping'
+  exit
+end
 
 # RightScale unique identifier
 uuid = node[:rightscale][:instance_uuid]
