@@ -30,7 +30,7 @@
 
 log 'Setup RightScale remote syslog logging.'
 
-if !node.has_key? :rightscale && (node.rightscale.servers.lumberjack.hostname.nil? or node.rightscale.servers.lumberjack.hostname.empty?)
+if !node.has_key? :rightscale
   log 'Not attached to RightScale, skipping logging setup.'
   return
 end
