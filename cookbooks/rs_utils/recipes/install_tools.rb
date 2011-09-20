@@ -22,7 +22,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+log "Install RightScale Tools."
 
+if !File.exists?('/opt/rightscale/sandbox/bin')
+  log "RightLink sandbox does not exist, skipping."
+  return
+end
 
 SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
 RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools-0.1.2.gem")
@@ -41,4 +46,3 @@ r = gem_package RESOURCE_GEM do
   action :nothing
 end
 r.run_action(:install)
-
