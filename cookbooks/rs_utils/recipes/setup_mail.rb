@@ -42,7 +42,7 @@ directory "/var/spool/oldmail" do
   group "mail"
 end
 
-# == Add mail to logrotate
-cookbook_file "/etc/logrotate.d/mail" do
-  source "mail"
+# Add mail to logrotate
+template "/etc/logrotate.d/mail" do
+  source "logrotate.d.mail.erb"
 end
