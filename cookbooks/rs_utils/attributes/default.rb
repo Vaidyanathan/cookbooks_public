@@ -23,7 +23,7 @@
 
 default[:rs_utils][:short_hostname]        = 'localhost'
 default[:rs_utils][:domain_name]           = 'localdomain'
-default[:rs_utils][:search_suffix]         = nil
+default[:rs_utils][:search_suffix]         = ''
 
 default[:rs_utils][:timezone] = nil
 #default[:rs_utils][:timezone] = "UTC"
