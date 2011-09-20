@@ -24,7 +24,7 @@
 
 log "Setup RightScale tags."
 
-if !node.has_key? :rightscale and !node.has_key? :cloud
+if !(node.has_key? :rightscale and node.has_key? :cloud)
   log 'Not attached to RightScale, skipping tags setup.'
   return
 end
