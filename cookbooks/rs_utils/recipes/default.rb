@@ -24,8 +24,5 @@
 
 package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:codename] == 'hardy'
 
+include_recipe "rs_utils::install_tools"
 include_recipe "rs_utils::setup_server_tags"
-include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::setup_logging"
-include_recipe "rs_utils::setup_mail"
-include_recipe "rs_utils::setup_monitoring"
