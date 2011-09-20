@@ -29,9 +29,9 @@ service "postfix"
 # == Update main.cf (if needed)
 # We make the changes needed for centos, but using the default main.cf 
 # config everywhere else
-cookbook_file "/etc/postfix/main.cf" do
+template "/etc/postfix/main.cf" do
   only_if { node.platform == 'centos' }
-  source "postfix.main.cf"
+  source "postfix.main.cf.erb"
   notifies :restart, resources(:service => "postfix"), :delayed
 end
 
