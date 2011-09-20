@@ -132,7 +132,7 @@
     "rs_utils::install_file_stats_collectd_plugin": "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting.",
     "rs_utils::setup_timezone": "Sets system timezone.",
     "rs_utils::setup_mail": "Basic mail setup.",
-    "rs_utils::default": "Install utilities",
+    "rs_utils::default": "Install rightscale_tools and set tags only.",
     "rs_utils::install_mysql_collectd_plugin": "Install mysql collectd plugin",
     "rs_utils::install_tools": "Install RightScale instance tools",
     "rs_utils::setup_hostname": "Set system hostname.",

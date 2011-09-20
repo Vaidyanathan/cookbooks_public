@@ -5,7 +5,7 @@ description      "Enable instance Monitoring and logging in the RightScale dashb
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
  
-recipe "rs_utils::default", "Install utilities"
+recipe "rs_utils::default", "Install rightscale_tools and set tags only."
 recipe "rs_utils::setup_logging", "Install and configure RightScale dashboard logging."
 recipe "rs_utils::setup_monitoring", "Install and configure RightScale dashboard monitoring."
 recipe "rs_utils::setup_mail", "Basic mail setup."
