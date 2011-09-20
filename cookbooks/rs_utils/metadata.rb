@@ -17,27 +17,25 @@ recipe "rs_utils::install_tools", "Install RightScale instance tools"
 recipe "rs_utils::install_mysql_collectd_plugin", "Install mysql collectd plugin"
 recipe "rs_utils::install_file_stats_collectd_plugin", "Install file-stats.rb collectd plugin.  This is used for mysql binary backup alerting."
 
-
 attribute "rs_utils/timezone",
   :display_name => "Timezone",
   :description => "Sets the system time to the timezone of the specified input, which must be a valid zoneinfo/tz database entry.  If the input is 'unset' the timezone will use the 'localtime' that's defined in your RightScale account under Settings -> User -> Preferences tab.  You can find a list of valid examples from the timezone pulldown bar in the Preferences tab. The server will not be updated for daylight savings time.  Ex: US/Pacific, US/Eastern",
   :required => "optional",
-  :default => "UTC",
-  :recipes => [ "rs_utils::setup_timezone", "rs_utils::default" ]
+  :recipes => [ "rs_utils::setup_timezone" ]
   
 attribute "rs_utils/process_list",
   :display_name => "Process List",
   :description => "A space-separated list of additional processes to monitor in the RightScale Dashboard.  Ex: sshd crond",
   :required => "optional",
   :default => "",
-  :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring", "rs_utils::default" ]
+  :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring" ]
 
 attribute "rs_utils/process_match_list",
   :display_name => "Process Match List",
   :description => "A space-separated list of pairs used to match the name(s) of additional processes to monitor in the RightScale Dashboard.  Pair arguments are passed in using the syntax 'name/regex'. Ex: ssh/ssh* cron/cron*",
   :required => "optional",
   :default => "",
-  :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring", "rs_utils::default" ]
+  :recipes => [ "rs_utils::install_mysql_collectd_plugin", "rs_utils::setup_monitoring" ]
 
 attribute "rs_utils/private_ssh_key",
  :display_name => "Private SSH Key",
