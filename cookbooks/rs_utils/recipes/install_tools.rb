@@ -25,7 +25,7 @@
 log "Install RightScale Tools."
 
 if !File.exists?('/opt/rightscale/sandbox/bin')
-  log "RightLink sandbox does not exist, skipping."
+  log "RightLink sandbox does not exist, skipping tools install."
   return
 end
 
