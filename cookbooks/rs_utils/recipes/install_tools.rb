@@ -22,23 +22,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-log "Install RightScale Tools."
+log 'Install RightScale Tools.'
 
 if !File.exists?('/opt/rightscale/sandbox/bin')
-  log "RightLink sandbox does not exist, skipping tools install."
+  log 'RightLink sandbox does not exist, skipping tools install.'
   return
 end
 
-SANDBOX_BIN_DIR = "/opt/rightscale/sandbox/bin"
-RESOURCE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "rightscale_tools_public-0.3.7.gem")
-RACKSPACE_GEM = ::File.join(::File.dirname(__FILE__), "..", "files", "default", "right_rackspace-0.0.0.gem")
+SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
 
-gem_package RACKSPACE_GEM do
+gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'right_rackspace-0.0.0.gem')}" do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
+  version "0.0.0"
   action :install
 end
 
-gem_package RESOURCE_GEM do
+gem_package "#{File.join(::File.dirname(__FILE__), '..', 'files', 'default', 'rightscale_tools_public-0.3.7.gem')}"do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
+  version "0.3.7"
   action :install
 end
