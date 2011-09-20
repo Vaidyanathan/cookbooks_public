@@ -35,6 +35,6 @@ end
 
 ruby_block "show_timezone" do
   block do
-    Chef::Log.info("Timezone: #{File.readlink('/etc/localtime')} (#{Time.now.strftime("%z %Z")}).")
+    Chef::Log.info("System timezone: #{Time.now.strftime("%z %Z")}#{File.readlink('/etc/localtime').gsub(/^/, ' (').gsub(/$/, ').') unless !File.symlink?('/etc/localtime')}")
   end
 end
