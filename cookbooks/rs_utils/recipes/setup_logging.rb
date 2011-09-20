@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: logging
+# Recipe:: setup_logging
 #
 # Copyright (c) 2011 RightScale Inc
 #
