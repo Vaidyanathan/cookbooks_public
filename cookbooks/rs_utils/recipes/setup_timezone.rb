@@ -33,13 +33,13 @@ link '/etc/localtime' do
   to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
 end
 
-log "Changing timezone to #{node.rs_utils.timezone}." do
+log "Changed timezone to #{node.rs_utils.timezone}." do
   action :nothing
 end
 
 localtime_set = resources(:link => '/etc/localtime')
 localtime_log = resources(:log => "Changing timezone to #{node.rs_utils.timezone}.")
-localtime_set.notifies(:write, localtime_log), :immediately
+localtime_set.notifies(:write, localtime_log, :immediately)
 
 # finally, show the current system timezone
 ruby_block "show_timezone" do
