@@ -24,7 +24,7 @@
 
 log "Set system timezone."
 
-unless !node.has_key? :rs_utils and !node.rs_utils.has_key? :timezone and (node.rs_utils.timezone.nil? or node.rs_utils.timezone.empty?)
+unless node.has_key? :rs_utils and node.rs_utils.has_key? :timezone and !(node.rs_utils.timezone.nil? or node.rs_utils.timezone.empty?)
   log "Node attrbute 'timezone' unset, skipping."
   return
 end
