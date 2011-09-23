@@ -45,6 +45,9 @@ def show_host_info
   log "IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}"
 end
 
+# ensure the required short hostname is lower case
+node.rs_utils.short_hostname.downcase!
+
 # set hostname from short or long (when domain_name set)
 unless node.rs_utils.domain_name.nil? || node.rs_utils.domain_name == ''  
   hostname = "#{node.rs_utils.short_hostname}.#{node.rs_utils.domain_name}"
