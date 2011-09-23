@@ -40,7 +40,7 @@ log "Changed timezone to #{node.rs_utils.timezone}." do
 end
 
 localtime_set = resources(:link => '/etc/localtime')
-localtime_log = resources(:log => "Changing timezone to #{node.rs_utils.timezone}.")
+localtime_log = resources(:log => "Changed timezone to #{node.rs_utils.timezone}.")
 localtime_set.notifies(:write, localtime_log, :immediately)
 
 # finally, show the current system timezone
