@@ -29,6 +29,8 @@ unless node.has_key? :rs_utils and node.rs_utils.has_key? :timezone and !(node.r
   return
 end
 
+# TODO: Add checking if zone file exists in the zoneinfo
+
 link '/etc/localtime' do
   to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
 end
