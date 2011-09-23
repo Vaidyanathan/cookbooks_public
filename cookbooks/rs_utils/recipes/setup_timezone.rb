@@ -24,15 +24,24 @@
 
 log "Set system timezone."
 
-if node.has_key? :rs_utils and node.rs_utils.has_key? :timezone and !(node.rs_utils.timezone.nil? or node.rs_utils.timezone.empty?)
-  log "Setting timezone to #{node.rs_utils.timezone}."
-  link "/etc/localtime" do
-    to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
-  end
-else 
-  log "Attrbute timezone unset, skipping."
+unless !node.has_key? :rs_utils and !node.rs_utils.has_key? :timezone and (node.rs_utils.timezone.nil? or node.rs_utils.timezone.empty?)
+  log "Node attrbute 'timezone' unset, skipping."
+  return
 end
 
+link '/etc/localtime' do
+  to "/usr/share/zoneinfo/#{node.rs_utils.timezone}"
+end
+
+log "Changing timezone to #{node.rs_utils.timezone}." do
+  action :nothing
+end
+
+localtime_set = resources(:link => '/etc/localtime')
+localtime_log = resources(:log => "Changing timezone to #{node.rs_utils.timezone}.")
+localtime_set.notifies(:write, localtime_log)
+
+# finally, show the current system timezone
 ruby_block "show_timezone" do
   block do
     Chef::Log.info("System timezone: #{Time.now.strftime("%z %Z")}#{File.readlink('/etc/localtime').gsub(/^/, ' (').gsub(/$/, ')') unless !File.symlink?('/etc/localtime')}.")
