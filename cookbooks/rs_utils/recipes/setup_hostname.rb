@@ -165,8 +165,13 @@ if platform?('debian')
 end
 
 # rightlink commandline tools set tag with rs_tag
-execute "set_rs_hostname_tag" do
-    command "( if type -P rs_tag &>/dev/null; then rs_tag --add 'node:hostname=#{hostname}'; fi ) || true"    # exits 127 or similar, though not from command line (not sure why)
+# the rs_tag command exits 127 or similar on occasion, though not from command line (not sure why); hopefully || true can be removed
+script "set_node_hostname_tag" do
+  interpreter "bash"
+  user "root"
+  code <<-EOH
+( if type -P rs_tag &>/dev/null; then rs_tag --add 'node:hostname=#{hostname}'; fi ) || true"    
+  EOH
 end
   
 # Show the new host/node information
