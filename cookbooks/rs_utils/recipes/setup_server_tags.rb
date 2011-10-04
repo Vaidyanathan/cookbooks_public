@@ -1,5 +1,5 @@
-# Cookbook Name:: setup_server_tags
-# Recipe:: default
+# Cookbook Name:: rs_utils
+# Recipe:: setup_server_tags
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -30,24 +30,24 @@ unless (node.has_key? :rightscale and node.has_key? :cloud)
 end
 
 # RightScale unique identifier
-uuid = node[:rightscale][:instance_uuid]
-log "Adding server tag for UUID #{uuid}"
+uuid = node.rightscale.instance_uuid
+log "Adding server tag for UUID #{uuid}."
 right_link_tag "server:uuid=#{uuid}"
 
-i=0
 # Add a tag for each private IP address
-while node[:cloud][:private_ips] && node[:cloud][:private_ips][i] do 
-  ip = node[:cloud][:private_ips][i]
-  log "Adding private ip tag for ip address #{ip}"
+i=0
+while node.cloud.private_ips && node.cloud.private_ips[i] do 
+  ip = node.cloud.private_ips[i]
+  log "Adding private ip tag for ip address #{ip}."
   right_link_tag "server:private_ip_#{i}=#{ip}"
   i += 1
 end
 
-i=0
 # Add a tag for each public IP address
-while node[:cloud][:public_ips] && node[:cloud][:public_ips][i] do 
-  ip = node[:cloud][:public_ips][i]
-  log "Adding public ip tag for ip address #{ip}"
+i=0
+while node.cloud.public_ips && node.cloud.public_ips[i] do 
+  ip = node.cloud.public_ips[i]
+  log "Adding public ip tag for ip address #{ip}."
   right_link_tag "server:public_ip_#{i}=#{ip}"
   i += 1
 end
