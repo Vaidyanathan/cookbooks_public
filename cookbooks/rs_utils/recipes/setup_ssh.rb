@@ -22,27 +22,33 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#Chef::Log.info "I bet this isn't nil: #{node.rs_utils.private_ssh_key}"
-
 log "Install private SSH key."
 
-if node.has_key? :rs_utils and node.rs_utils.has_key? :private_ssh_key and !(node.rs_utils.private_ssh_key.nil? or node.rs_utils.private_ssh_key.empty?)
-
-  directory "/root/.ssh" do
-    recursive true
+unless node.has_key? :rs_utils and node.rs_utils.has_key? :private_ssh_key and !(node.rs_utils.private_ssh_key.nil? or node.rs_utils.private_ssh_key.empty?)
+  # remove existing key if set to '' (empty)
+  if !node.rs_utils.private_ssh_key.nil? and node.rs_utils.private_ssh_key.empty?
+    unless !File.exist?('/root.ssh/id_rsa')
+      log 'Empty private SSH key provided, removing key.'
+      File.delete('/root.ssh/id_rsa')
+    else
+      log 'No existing private SSH key, skipping removal.'
+    end
+  else
+    log "No private SSH key provided, skipping."
   end
+  return
+end
 
-  log "Copying key to /root/.ssh/id_rsa."
-  template "/root/.ssh/id_rsa" do
-    source "id_rsa.erb"
-    mode 0600
-    variables(
-      :private_ssh_key => "#{node.rs_utils.private_ssh_key}"
-    )
-  end
-  
-else
+directory "/root/.ssh" do
+  recursive true
+end
 
-  log "No private SSH key provided, skipping."
-  
+log "Copying key to /root/.ssh/id_rsa."
+
+template "/root/.ssh/id_rsa" do
+  source "id_rsa.erb"
+  mode 0600
+  variables(
+    :private_ssh_key => "#{node.rs_utils.private_ssh_key}"
+  )
 end
