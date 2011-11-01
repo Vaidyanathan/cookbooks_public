@@ -1,4 +1,3 @@
-
 # Cookbook Name:: rs_utils
 # Recipe:: install_file_stats_collectd_plugin
 #
