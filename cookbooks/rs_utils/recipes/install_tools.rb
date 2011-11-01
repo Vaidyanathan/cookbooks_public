@@ -24,12 +24,17 @@
 
 log 'Install RightScale Tools.'
 
-if !File.exists?('/opt/rightscale/sandbox/bin')
+SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
+
+unless File.exists?(SANDBOX_BIN_DIR)
   log 'RightLink sandbox does not exist, skipping tools install.'
   return
 end
 
-SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
+unless File.exists?("#{SANDBOX_BIN_DIR}/gem")
+  log 'RightLink sandbox gem_binary does not exist, skipping tools install.'
+  return
+end
 
 gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'right_rackspace-0.0.0.gem')}" do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
@@ -37,7 +42,7 @@ gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'righ
   action :install
 end
 
-gem_package "#{File.join(::File.dirname(__FILE__), '..', 'files', 'default', 'rightscale_tools_public-0.3.7.gem')}"do
+gem_package "#{File.join(::File.dirname(__FILE__), '..', 'files', 'default', 'rightscale_tools_public-0.3.7.gem')}" do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
   version "0.3.7"
   action :install
