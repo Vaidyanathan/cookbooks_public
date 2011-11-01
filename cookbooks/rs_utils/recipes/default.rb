@@ -22,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "debian-helper-scripts" if node[:platform] == 'ubuntu' && node[:lsb][:codename] == 'hardy'
+package "debian-helper-scripts" if node['platform'] == 'ubuntu' && node['lsb.codename'] == 'hardy'
 
 include_recipe "rs_utils::install_tools"
 include_recipe "rs_utils::setup_server_tags"
