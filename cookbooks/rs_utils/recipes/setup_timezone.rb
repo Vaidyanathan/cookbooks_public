@@ -44,7 +44,7 @@ localtime_log = resources(:log => "Changed timezone to #{node.rs_utils.timezone}
 localtime_set.notifies(:write, localtime_log, :immediately)
 
 # finally, show the current system timezone
-ruby_block "show_timezone" do
+ruby_block 'show_timezone' do
   block do
     Chef::Log.info("System timezone: #{Time.now.strftime("%z %Z")}#{File.readlink('/etc/localtime').gsub(/^/, ' (').gsub(/$/, ')') unless !File.symlink?('/etc/localtime')}.")
   end
