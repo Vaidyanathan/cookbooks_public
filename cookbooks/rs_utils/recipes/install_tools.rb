@@ -27,12 +27,12 @@ log 'Install RightScale Tools.'
 SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
 
 unless File.exists?(SANDBOX_BIN_DIR)
-  log 'RightLink sandbox does not exist, skipping tools install.'
+  log 'RightLink sandbox does not exist, skip tools install.'
   return
 end
 
 unless File.exists?("#{SANDBOX_BIN_DIR}/gem")
-  log 'RightLink sandbox gem_binary does not exist, skipping tools install.'
+  log 'RightLink sandbox gem_binary does not exist, skip tools install.'
   return
 end
 
