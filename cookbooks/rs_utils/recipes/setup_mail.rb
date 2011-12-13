@@ -23,8 +23,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package "postfix"
-
 service "postfix"
+
+# postfix package doesn't remove sendmail on redhat distros
+remove_sendmail = value_for_platform(
+  ["centos", "redhat", "suse", "fedora" ] => {
+    "default" => true
+  },
+)
+
+execute "set_postfix_default_mta" do
+  command "alternatives --set mta /usr/sbin/sendmail.postfix"
+  action :nothing
+end
+
+package "sendmail" do
+  action: remove
+  only_if { remove_sendmail }
+  notifies :run, "execute[set_postfix_default_mta]", :immediately
+end
 
 # == Update main.cf (if needed)
 # We make the changes needed for centos, but using the default main.cf 
@@ -33,6 +50,7 @@ template "/etc/postfix/main.cf" do
   only_if { node.platform == 'centos' }
   source "postfix.main.cf.erb"
   notifies :restart, resources(:service => "postfix"), :delayed
+  mode "644"
 end
 
 directory "/var/spool/oldmail" do
