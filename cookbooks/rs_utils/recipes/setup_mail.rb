@@ -29,7 +29,7 @@ service "postfix"
 remove_sendmail = value_for_platform(
   ["centos", "redhat", "suse", "fedora" ] => {
     "default" => true
-  },
+  }
 )
 
 execute "set_postfix_default_mta" do
