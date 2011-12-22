@@ -38,7 +38,7 @@ execute "set_postfix_default_mta" do
 end
 
 package "sendmail" do
-  action: remove
+  action :remove
   only_if { remove_sendmail }
   notifies :run, "execute[set_postfix_default_mta]", :immediately
 end
