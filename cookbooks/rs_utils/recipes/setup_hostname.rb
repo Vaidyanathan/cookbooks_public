@@ -173,7 +173,12 @@ script "set_node_hostname_tag" do
 ( if type -P rs_tag &>/dev/null; then rs_tag --add 'node:hostname=#{hostname}'; fi ) || true
   EOH
 end
-  
+
+# reload ohai hostname plugin for subsequent recipes in the run_list
+ohai "reload_hostname_info_from_ohai" do
+  plugin "hostname"
+end
+
 # Show the new host/node information
 ruby_block "show_new_host_info" do
   block do
