@@ -25,7 +25,7 @@ end
 
 # get node IP
 node_ip = "#{local_ip}"
-log "Node IP: #{node_ip}"
+log("Node IP: #{node_ip}") { level :debug }
 #show_host_info
 
 # ensure the required short hostname is lower case
@@ -39,10 +39,10 @@ else
   hostname = "#{node['rs_utils']['short_hostname']}"
   hosts_list = "#{node['rs_utils']['short_hostname']}"
 end
-log  "Setting hostname for '#{hostname}'."
+log("Setting hostname for '#{hostname}'.") { level :debug }
 
 # Update /etc/hosts
-log 'Configure /etc/hosts'
+log('Configure /etc/hosts.') { level :debug }
 template "/etc/hosts" do
   source "hosts.erb"
   variables(
@@ -53,7 +53,7 @@ template "/etc/hosts" do
 end
 
 # Update /etc/hostname
-log 'Configure /etc/hostname'
+log('Configure /etc/hostname') { level :debug }
 file "/etc/hostname" do
   owner "root"
   group "root"
@@ -63,7 +63,7 @@ file "/etc/hostname" do
 end
 
 # Call hostname command
-log 'Setting hostname.'
+log('Setting hostname.') { level :debug }
 if platform?('centos', 'redhat')
   bash "set_hostname" do
     code <<-EOH
@@ -81,7 +81,7 @@ end
 
 # Call domainname command
 if !node['rs_utils']['domain_name'].nil? || node['rs_utils']['domain_name'] != ""
-  log 'Running domainname'
+  log('Running domainname') { level :debug }
   bash "set_domainname" do
     code <<-EOH
     domainname #{node['rs_utils']['domain_name']}
@@ -91,7 +91,7 @@ end
 
 # restart hostname services on appropriate platforms
 if platform?('ubuntu')
-  log 'Starting hostname service.'
+  log('Starting hostname service.') { level :debug }
   service "hostname" do
   service_name "hostname"
   supports :restart => true, :status => true, :reload => true
@@ -99,7 +99,7 @@ if platform?('ubuntu')
   end
 end
 if platform?('debian')
-  log 'Starting hostname.sh service.'
+  log('Starting hostname.sh service.') { level :debug }
   service "hostname.sh" do
   service_name "hostname.sh"
   supports :restart => false, :status => true, :reload => false
