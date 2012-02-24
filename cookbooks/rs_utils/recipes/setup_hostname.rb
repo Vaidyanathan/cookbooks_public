@@ -25,6 +25,5 @@
 rs_utils_hostname "set_system_hostname" do
   short_hostname node['rs_utils']['short_hostname']
   domain_name node['rs_utils']['domain_name']
-  provider "rs_utils_hostname"
   action :set
 end
