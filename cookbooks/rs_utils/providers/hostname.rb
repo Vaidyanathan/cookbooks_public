@@ -12,21 +12,9 @@ def local_ip
     Socket.do_not_reverse_lookup = orig
 end
 
-#def show_host_info
-  # Display current hostname values in log
-#  log "Hostname: #{`hostname`.strip == '' ? '<none>' : `hostname`.strip}"
-#  log "Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}"
-#  log "Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}"
-#  log "Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}"
-#  log "Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}"
-#  log "FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}"
-#  log "IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}"
-#end
-
 # get node IP
 node_ip = "#{local_ip}"
 log("Node IP: #{node_ip}") { level :debug }
-#show_host_info
 
 # ensure the required short hostname is lower case
 node['rs_utils']['short_hostname'].downcase!
