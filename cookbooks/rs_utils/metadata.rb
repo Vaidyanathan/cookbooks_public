@@ -63,9 +63,3 @@ attribute "rs_utils/domain_name",
   :description => "The domain name that you would like this node to have, e.g. domain.suf. Note: Only set a valid domain name to satisfy the resolution of a FQDN; use ignore:ignore for no domain name.",
   :required => "optional",
   :recipes => [ "rs_utils::setup_hostname" ]
-
-attribute "rs_utils/search_suffix",
-  :display_name => "Domain Search Suffix",
-  :description => "The domain search suffix you would like this node to have, e.g. domain.suf.",
-  :required => "optional",
-  :recipes => [ "rs_utils::setup_hostname" ]
