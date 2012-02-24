@@ -24,6 +24,5 @@
 
 attribute :short_hostname, :kind_of => String
 attribute :domain_name, :kind_of => String
-attribute :search_suffix, :kind_of => String
 
 actions :set
