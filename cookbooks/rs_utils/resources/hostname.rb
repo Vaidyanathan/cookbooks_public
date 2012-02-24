@@ -1,5 +1,5 @@
 # Cookbook Name:: rs_utils
-# Recipe:: setup_hostname
+# Resource:: hostname
 #
 # Copyright (c) 2011 RightScale Inc
 #
@@ -22,10 +22,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-rs_utils_hostname "set_system_hostname" do
-  short_hostname node['rs_utils']['short_hostname']
-  domain_name node['rs_utils']['domain_name']
-  search_suffix node['rs_utils']['search_suffix']
-  action :set
-  provider "rs_utils_hostname"
-end
+attribute :short_hostname, :kind_of => String
+attribute :domain_name, :kind_of => String
+attribute :search_suffix, :kind_of => String
+
+actions :set
