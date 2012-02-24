@@ -122,19 +122,6 @@
       ],
       "calculated": false,
       "type": "string"
-    },
-    "rs_utils/search_suffix": {
-      "display_name": "Domain Search Suffix",
-      "description": "The domain search suffix you would like this node to have, e.g. domain.suf.",
-      "required": "optional",
-      "recipes": [
-        "rs_utils::setup_hostname"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
     }
   },
   "groupings": {
