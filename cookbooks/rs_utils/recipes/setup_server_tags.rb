@@ -30,23 +30,22 @@ unless (node.has_key? :rightscale and node.has_key? :cloud)
 end
 
 # RightScale unique identifier
-uuid = node.rightscale.instance_uuid
-log "Adding server tag for UUID #{uuid}."
-right_link_tag "server:uuid=#{uuid}"
+log "Adding server tag for UUID #{node['rightscale']['instance_uuid']}."
+right_link_tag "server:uuid=#{node['rightscale']['instance_uuid']}"
 
+# these are cloud-dependent (and on supported clouds only, TODO generics)
 # Add a tag for each private IP address
 i=0
-while node.cloud.private_ips && node.cloud.private_ips[i] do 
-  ip = node.cloud.private_ips[i]
+while node['cloud']['private_ips'] && node.cloud.private_ips[i] do 
+  ip = node['cloud']['private_ips'][i]
   log "Adding private ip tag for ip address #{ip}."
   right_link_tag "server:private_ip_#{i}=#{ip}"
   i += 1
 end
-
 # Add a tag for each public IP address
 i=0
-while node.cloud.public_ips && node.cloud.public_ips[i] do 
-  ip = node.cloud.public_ips[i]
+while node['cloud']['public_ips'] && node['cloud']['public_ips'][i] do 
+  ip = node['cloud']['public_ips'][i]
   log "Adding public ip tag for ip address #{ip}."
   right_link_tag "server:public_ip_#{i}=#{ip}"
   i += 1
