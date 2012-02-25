@@ -36,8 +36,19 @@ unless node.has_key? :rightscale
 end
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
-package "syslog-ng"
-service "syslog-ng"
+service "syslog-ng" do
+  action :nothing 
+end
+
+package "syslog-ng" do
+  action :nothing
+  notifies :start, resources(:service => "syslog-ng"), :delayed
+end
+
+package "rsyslog" do
+  action :remove
+  notifies :install, resources(:package => "syslog-ng"), :immediately
+end
 
 # == Create a new /dev/null for syslog-ng to use
 execute "ensure_dev_null" do
