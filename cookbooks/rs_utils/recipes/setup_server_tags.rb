@@ -51,3 +51,9 @@ while node.cloud.public_ips && node.cloud.public_ips[i] do
   right_link_tag "server:public_ip_#{i}=#{ip}"
   i += 1
 end
+
+#require 'ohai'
+#o = Ohai::System.new
+#o.all_plugins
+#lsb_version = p o.data['lsb']['description']
+#right_link_tag "node:lsb_version=#{lsb_version}"
