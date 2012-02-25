@@ -52,5 +52,5 @@ while node['cloud']['public_ips'] && node['cloud']['public_ips'][i] do
 end
 
 # for future versions which can use system chef and not sandbox (ohai resource might need reload in rs)
-#right_link_tag "node:lsb_description=#{node['lsb']['description'].gsub(' ', '_')}"
+right_link_tag "node:lsb_description=#{node['lsb']['description'].gsub(' ', '_')}"
 #right_link_tag "node:chef_version=#{node['chef_packages']['chef']['version']}"
