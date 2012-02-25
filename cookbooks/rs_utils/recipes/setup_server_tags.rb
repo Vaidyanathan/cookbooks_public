@@ -52,8 +52,5 @@ while node.cloud.public_ips && node.cloud.public_ips[i] do
   i += 1
 end
 
-#require 'ohai'
-#o = Ohai::System.new
-#o.all_plugins
-#lsb_version = p o.data['lsb']['description']
-#right_link_tag "node:lsb_version=#{lsb_version}"
+right_link_tag "node:chef_version=#{node['chef_packages']['chef']['version']}"
+right_link_tag "node:lsb_description=#{node['lsb']['description'].gsub(' ', '_')}"
