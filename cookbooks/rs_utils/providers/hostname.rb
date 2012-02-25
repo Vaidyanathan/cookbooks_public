@@ -108,7 +108,8 @@ end
 # reload ohai hostname plugin for subsequent recipes in the run_list
 ohai "reload_hostname_info_from_ohai" do
   plugin "hostname"
-end unless Dir.exists?('/opt/rightscale/sandbox/lib/ruby/gems/1.8/gems/chef-0.8.16.8')   # fails in rightlink 5.6/0.8.16.8 :(
+  not_if { Dir.exists?('/opt/rightscale/sandbox/lib/ruby/gems/1.8/gems/chef-0.8.16.8') }   # fails in rightlink 5.6/0.8.16.8 :(
+end
 
 # Show the new host/node information
 ruby_block "show_host_info" do
