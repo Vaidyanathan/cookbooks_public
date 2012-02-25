@@ -4,7 +4,9 @@ license          IO.read(File.expand_path(File.join(File.dirname(__FILE__), '..'
 description      "Enable instance Monitoring and logging in the RightScale dashboard."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"
- 
+
+conflicts "rsyslog"
+
 recipe "rs_utils::default", "Install rightscale_tools and set tags only."
 recipe "rs_utils::setup_logging", "Install and configure RightScale dashboard logging."
 recipe "rs_utils::setup_monitoring", "Install and configure RightScale dashboard monitoring."

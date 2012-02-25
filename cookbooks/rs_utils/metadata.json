@@ -14,6 +14,7 @@
   "suggestions": {
   },
   "conflicting": {
+    "rsyslog": ">= 0.0.0"
   },
   "providing": {
   },
