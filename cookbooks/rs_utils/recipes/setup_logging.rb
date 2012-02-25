@@ -36,21 +36,34 @@ unless node.has_key? :rightscale
 end
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
-package "rsyslog"
+
+service "rsyslog" do
+  action :stop
+end
 
 service "rsyslog" do
   action :disable
 end
 
-package "syslog-ng"
-service "syslog-ng"
-
-service "rsyslog" do
-  action :stop
-  notifies :start, resources(:service => "syslog-ng"), :delayed
+if platform?('centos', 'redhat')
+  # avoids removing dependencies of rsyslog such as rightscale and lsb packages
+  execute "remove_rsyslog" do
+    command "rpm --nodeps -e rsyslog"
+  end
 end
 
-# == Create a new /dev/null for syslog-ng to use
+package "syslog-ng"
+
+service "syslog-ng" do
+  action :start
+end
+
+#package "rsyslog" do
+#  action :remove
+#  notifies :install, resources(:package => "syslog-ng")
+#end
+
+# /dev/null for syslog-ng
 execute "ensure_dev_null" do
   creates "/dev/null.syslog-ng"
   command "mknod /dev/null.syslog-ng c 1 3"
