@@ -36,11 +36,17 @@ unless node.has_key? :rightscale
 end
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
+package "rsyslog"
+
 service "rsyslog" do
   action :disable
 end
 
-package "syslog-ng" do
+package "syslog-ng"
+service "syslog-ng"
+
+service "rsyslog" do
+  action :stop
   notifies :start, resources(:service => "syslog-ng"), :delayed
 end
 
