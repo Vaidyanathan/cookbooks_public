@@ -105,14 +105,7 @@ script "set_node_hostname_tag" do
   EOH
 end
 
-# reload ohai hostname plugin for subsequent recipes in the run_list
-if ! Dir.exists?('/opt/rightscale/sandbox/lib/ruby/gems/1.8/gems/chef-0.8.16.8')  # fails in rightlink 5.6/0.8.16.8 :(
-  ohai "reload_hostname_info_from_ohai" do
-    plugin "hostname"
-  end
-end
-
-# Show the new host/node information
+# Show the new host/node information (after ohai reload)
 ruby_block "show_host_info" do
   block do
     # show new host values from system
@@ -124,6 +117,15 @@ ruby_block "show_host_info" do
     Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
     Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
     Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
+  end
+  action :nothing
+end
+
+# reload ohai hostname plugin for subsequent recipes in the run_list
+if ! Dir.exists?('/opt/rightscale/sandbox/lib/ruby/gems/1.8/gems/chef-0.8.16.8')  # fails in rightlink 5.6/0.8.16.8 :(
+  ohai "reload_hostname_info_from_ohai" do
+    plugin "hostname"
+    notifies :create, resources(:ruby_block => "show_host_info"), :delayed
   end
 end
 
