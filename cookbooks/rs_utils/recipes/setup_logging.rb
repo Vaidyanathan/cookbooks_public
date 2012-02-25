@@ -36,15 +36,20 @@ unless node.has_key? :rightscale
 end
 
 # rsyslog usually conflicts and should be removed first
-package "rsyslog" do
-  action :remove
+
+if node[:platform] == 'centos'
+  service "rsyslog" do
+    action :nothing
+  end
 end
 
-package "syslog-ng"
-
 service "syslog-ng" do
-  supports :start => true, :stop => true, :restart => true
-  action [ :enable ]
+  action :nothing
+end
+
+service "rsyslog" do
+  action :stop
+  notifies :enable, resources(:service => "syslog-ng"), :delayed
 end
 
 # == Create a new /dev/null for syslog-ng to use
