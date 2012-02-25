@@ -122,10 +122,11 @@ ruby_block "show_host_info" do
 end
 
 # reload ohai hostname plugin for subsequent recipes in the run_list
-ohai "reload_hostname_info_from_ohai" do
-  plugin "hostname"
-  not_if { system('/opt/rightscale/sandbox/bin/gem list | grep 0.8.16.4') }
-  notifies :create, resources(:ruby_block => "show_host_info"), :delayed
+if ! system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4')
+  ohai "reload_hostname_info_from_ohai" do
+    plugin "hostname"
+    notifies :create, resources(:ruby_block => "show_host_info"), :delayed
+  end
 end
 
 end
