@@ -35,6 +35,11 @@ unless node.has_key? :rightscale
   return
 end
 
+# rsyslog usually conflicts and should be removed first
+package "rsyslog" do
+  action :remove
+end
+
 package "syslog-ng"
 
 service "syslog-ng" do
