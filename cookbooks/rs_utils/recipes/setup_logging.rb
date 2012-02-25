@@ -48,7 +48,7 @@ end
 if platform?('centos', 'redhat')
   # avoids removing dependencies of rsyslog such as rightscale and lsb packages
   execute "remove_rsyslog" do
-    command "rpm --nodeps -e rsyslog"
+    command "( rpm -qi rsyslog && rpm --nodeps -e rsyslog ) || echo 'skipping rsyslog removal.'"
   end
 end
 
@@ -57,11 +57,6 @@ package "syslog-ng"
 service "syslog-ng" do
   action :start
 end
-
-#package "rsyslog" do
-#  action :remove
-#  notifies :install, resources(:package => "syslog-ng")
-#end
 
 # /dev/null for syslog-ng
 execute "ensure_dev_null" do
