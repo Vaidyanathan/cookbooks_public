@@ -37,20 +37,7 @@ end
 
 # == rsyslog usually conflicts and should be removed first
 
-package "syslog-ng" do
-  action :nothing
-end
-
-if node[:platform] == 'centos'
-  package "rsyslog" do
-    action :remove
-    notifies :install, resources(:package => "syslog-ng"), :immediately
-  end
-end
-
-service "syslog-ng" do
-  action :enable
-end
+package "syslog-ng"
 
 # == Create a new /dev/null for syslog-ng to use
 execute "ensure_dev_null" do
