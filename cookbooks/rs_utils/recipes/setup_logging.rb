@@ -42,9 +42,6 @@ package "syslog-ng" do
 end
 
 if node[:platform] == 'centos'
-  service "rsyslog" do
-    action :stop
-  end
   package "rsyslog" do
     action :remove
     notifies :install, resources(:package => "syslog-ng"), :immediately
