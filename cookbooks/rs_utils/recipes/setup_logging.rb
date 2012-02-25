@@ -36,16 +36,13 @@ unless node.has_key? :rightscale
 end
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
-
-service "rsyslog" do
-  action :stop
-end
-
-service "rsyslog" do
-  action :disable
-end
-
 if platform?('centos', 'redhat')
+  service "rsyslog" do
+    action :stop
+  end
+  service "rsyslog" do
+    action :disable
+  end
   # avoids removing dependencies of rsyslog such as rightscale and lsb packages
   execute "remove_rsyslog" do
     command "( rpm -qi rsyslog && rpm --nodeps -e rsyslog ) || echo 'skipping rsyslog removal.'"
