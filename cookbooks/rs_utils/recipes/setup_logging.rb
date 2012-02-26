@@ -71,12 +71,10 @@ Dir.glob("/var/log/*").each do |f|
   if ::File.directory?(f)
     directory f do 
       owner "root" 
-      notifies :restart, resources(:service => "syslog-ng")
     end
   else
     file f do 
       owner "root" 
-      notifies :restart, resources(:service => "syslog-ng")
     end
   end
 end
