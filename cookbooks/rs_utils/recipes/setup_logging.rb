@@ -82,11 +82,11 @@ Dir.glob("/var/log/*").each do |f|
 end
 
 # setup log file rotation (this should be moved a logrotate recipe)
-cookbook_file "/etc/logrotate.conf" do
+remote_file "/etc/logrotate.conf" do
   source "logrotate.conf"
 end
   
-cookbook_file node['rs_utils']['logrotate_config'] do
+remote_file node['rs_utils']['logrotate_config'] do
   source "logrotate.d.syslog"
 end
 
