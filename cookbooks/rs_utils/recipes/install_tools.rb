@@ -31,6 +31,66 @@ end
 
 package "make"  # needed for 0.8 where build-essential cookbook does not work
 
-gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'right_rackspace-0.0.0.gem')}"
+directory "/var/rightscale/cache/rubygems" do
+  mode "0775"
+  owner "root"
+  group "root"
+  recursive true
+end
 
-gem_package "#{File.join(::File.dirname(__FILE__), '..', 'files', 'default', 'rightscale_tools_public-0.3.7.gem')}"
+RS_SANDBOX_GEM_BINARY="/opt/rightscale/sandbox/bin/gem"
+
+#
+# right_rackspace
+#
+gem_package "right_rackspace" do
+  source "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem"
+  version "0.0.0.2"
+  gem_binary "#{RS_SANDBOX_GEM_BINARY}"
+  action :nothing
+end
+
+remote_file "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem" do
+  source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
+  action :nothing
+  mode "07775"
+  notifies :install, resources(:gem_package => "right_rackspace"), :delayed
+end
+
+http_request "HEAD https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem" do
+  message ""
+  url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
+  action :head
+  if File.exists?("/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem")
+    headers "If-Modified-Since" => File.mtime("/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem").httpdate
+  end
+  notifies :create, resources(:remote_file => "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem"), :immediately
+end
+
+
+#
+# rightscale_tools_public
+#
+gem_package "rightscale_tools_public" do
+  source "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"
+  version "1.0.26"
+  gem_binary "#{RS_SANDBOX_GEM_BINARY}"
+  action :nothing
+end
+
+remote_file "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem" do
+  source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
+  action :nothing
+  mode "07775"
+  notifies :install, resources(:gem_package => "rightscale_tools_public"), :delayed
+end
+
+http_request "HEAD https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem" do
+  message ""
+  url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
+  action :head
+  if File.exists?("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem")
+    headers "If-Modified-Since" => File.mtime("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem").httpdate
+  end
+  notifies :create, resources(:remote_file => "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"), :immediately
+end
