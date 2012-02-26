@@ -50,18 +50,6 @@ package "collectd" do
   not_if "yum repolist | grep epel > /dev/null 2>&1"
 end unless node['platform'] =~ /redhat|centos/
 
-# lock this collectd package so it can't be updated (yum on redhat/centos only)
-if node['platform'] =~ /redhat|centos/
-  bash "yum_exclude_package_collectd" do
-    flags "-ex"
-    only_if { `file #{lockfile} && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
-    code <<-EOF
-      lockfile=/etc/yum.repos.d/Epel.repo
-      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> "$lockfile"
-    EOF
-  end
-end
-
 service "collectd" do
   action :enable  # ensure the service is enabled
 end
@@ -115,6 +103,17 @@ template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
     :monitor_procs => node.rs_utils.process_list_ary,
     :procs_match => node['rs_utils.process_match_list']
   )
+end
+
+# lock this collectd package so it can't be updated (yum on redhat/centos only)
+if node['platform'] =~ /redhat|centos/
+  bash "yum_exclude_package_collectd" do
+    flags "-ex"
+    only_if { `file /etc/yum.repos.d/Epel.repo && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
+    code <<-EOF
+      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo
+    EOF
+  end
 end
 
 # set rs monitoring tag to active
