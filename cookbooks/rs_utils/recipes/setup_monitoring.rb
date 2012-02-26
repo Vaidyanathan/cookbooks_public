@@ -60,6 +60,8 @@ if node['platform'] =~ /redhat|centos/
   end
 end
 
+service "collectd"
+
 # add rrd library for ubuntu
 package "librrd4" if platform?('ubuntu')
 
@@ -71,15 +73,15 @@ log 'Collectd package not installed' unless installed
 log "Checking installed collectd version: installed #{installed_ver}" if installed
 
 # == Generate config file 
-template node[:rs_utils][:collectd_config] do
+template node['rs_utils']['collectd_config'] do
   backup 5
   source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd")
   variables(
-    :sketchy_hostname => node.rightscale.servers.sketchy.hostname,
+    :sketchy_hostname => node['rightscale']['servers']['sketchy']['hostname'],
     :plugins => node.rs_utils.plugin_list_ary,
-    :instance_uuid => node.rightscale.instance_uuid,
-    :collectd_include_dir => node.rs_utils.collectd_plugin_dir
+    :instance_uuid => node['rightscale']['instance_uuid'],
+    :collectd_include_dir => node['rs_utils']['collectd_plugin_dir']
   )
 end
 
