@@ -30,12 +30,12 @@ end
 
 # install_collectd_with_disabled_epel
 package "collectd" do
-  only_if "yum repolist | grep epel | grep rightscale-epel"
+  only_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
   options "--disablerepo=epel --disablerepo=rightscale-epel"
 end unless ! platform?('centos')
 
 package "collectd" do
-  not_if "yum repolist | grep 'epel ' | grep rightscale-epel"
+  not_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
 end
 
 # If YUM, lock this collectd package so it can't be updated
@@ -104,11 +104,11 @@ end
 
 # patch collectd init script, so it uses collectdmon.  
 # only needed for CentOS, Ubuntu already does this out of the box.
-remote_file "/etc/init.d/collectd" do
+cookbook_file "/etc/init.d/collectd" do
   source "collectd-init-centos-with-monitor"
   mode 0755
+  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
   notifies :restart, resources(:service => "collectd")
-  only_if "which collectdmon"   # only when collectdmon is found installed
 end unless ! platform?('centos')
 
 # set rs monitoring tag to active
