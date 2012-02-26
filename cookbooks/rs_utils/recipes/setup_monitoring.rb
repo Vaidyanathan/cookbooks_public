@@ -35,7 +35,7 @@ package "collectd" do
 end unless ! platform?('centos')
 
 package "collectd" do
-  not_if "yum repolist | grep epel | grep rightscale-epel"
+  not_if "yum repolist | grep 'epel ' | grep rightscale-epel"
 end
 
 # If YUM, lock this collectd package so it can't be updated
