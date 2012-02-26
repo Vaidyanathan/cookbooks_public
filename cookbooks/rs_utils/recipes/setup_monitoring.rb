@@ -23,14 +23,20 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 log 'Setup RightScale monitoring.'
-
 if !node.has_key? :rightscale
   log 'Not attached to RightScale, skipping monitoring setup.'
   return
 end
 
-package "collectd"
-package "librrd4" if node[:platform] == 'ubuntu'
+if system('yum repolist | grep epel | grep rightscale-epel') and platform?('centos')
+  execute "install_collectd_with_disabled_epel" do
+    command "yum --disablerepo=epel --disablerepo=rightscale-epel install collectd"
+  end
+else
+  package "collectd"
+end
+
+package "librrd4" if platform?('ubuntu')
 
 service "collectd"
 
