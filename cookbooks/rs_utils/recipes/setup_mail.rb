@@ -40,7 +40,7 @@ end
 package "sendmail" do
   action :remove
   only_if { remove_sendmail }
-  notifies :run, "execute[set_postfix_default_mta]", :immediately
+  notifies :run, resources(:execute => "set_postfix_default_mta"), :immediately
 end
 
 # == Update main.cf (if needed)
