@@ -29,6 +29,8 @@ if !node.has_key? :rightscale
   return
 end
 
+SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
+
 package "make"  # needed for 0.8 where build-essential cookbook does not work
 
 gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'right_rackspace-0.0.0.gem')}" do
