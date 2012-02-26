@@ -37,30 +37,32 @@ cookbook_file "/etc/init.d/collectd" do
   action :nothing
 end
 
-# install_collectd_with_disabled_epel
+# install collectd (with_disabled_epel if required for redhat/centos)
 package "collectd" do
-  only_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
+  only_if "yum repolist | grep epel > /dev/null 2>&1"
   options "--disablerepo=epel --disablerepo=rightscale-epel"
   notifies :create, resources(:cookbook_file => "/etc/init.d/collectd")
-end unless ! platform?('centos')
+end unless ! node['platform'] =~ /redhat|centos/
 
 package "collectd" do
-  not_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
+  not_if "yum repolist | grep epel > /dev/null 2>&1"
 end
 
 # lock this collectd package so it can't be updated (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
-  lockfile = "/etc/yum.repos.d/Epel.repo"
-  bash "Lock package - YUM" do
+  bash "yum_exclude_package_collectd" do
     flags "-ex"
     only_if { `file #{lockfile} && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
     code <<-EOF
+      lockfile=/etc/yum.repos.d/Epel.repo
       echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> #{lockfile}
     EOF
   end
 end
 
-service "collectd"
+service "collectd" do
+  action :nothing
+end
 
 # add rrd library for ubuntu
 package "librrd4" if platform?('ubuntu')
@@ -86,7 +88,7 @@ template node['rs_utils']['collectd_config'] do
 end
 
 # == Create plugin conf dir
-directory "#{node[:rs_utils][:collectd_plugin_dir]}" do
+directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   owner "root"
   group "root"
   recursive true
