@@ -101,17 +101,6 @@ template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
   )
 end
 
-ruby_block "collectd_info" do
-  block do
-    arch = (node['kernel']['machine'] == "x86_64") ? "64" : "i386"
-    type = (node['platform'] == 'ubuntu') ? "deb" : "rpm"
-    installed_ver = (node['platform'] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
-    installed = (installed_ver == "") ? false : true
-    Chef::Log.info('collectd package not installed.') unless installed
-    Chef::Log.info("collectd #{installed_ver} installed.") if installed
-  end
-end
-
 # set rs monitoring tag to active
 right_link_tag "rs_monitoring:state=active" 
 
