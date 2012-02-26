@@ -52,7 +52,7 @@ service "syslog-ng" do
 end
 
 # /dev/null for syslog-ng
-execute "ensure_dev_null" do
+execute "ensure_dev_null.syslog-ng" do
   creates "/dev/null.syslog-ng"
   command "mknod /dev/null.syslog-ng c 1 3"
 end
