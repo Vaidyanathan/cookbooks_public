@@ -60,13 +60,11 @@ end
 http_request "HEAD https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem" do
   message ""
   url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
-  action :head
   if File.exists?("/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem")
     headers "If-Modified-Since" => File.mtime("/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem").httpdate
   end
   notifies :create, resources(:remote_file => "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem"), :immediately
 end
-
 
 #
 # rightscale_tools_public
@@ -88,7 +86,6 @@ end
 http_request "HEAD https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem" do
   message ""
   url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
-  action :head
   if File.exists?("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem")
     headers "If-Modified-Since" => File.mtime("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem").httpdate
   end
