@@ -39,11 +39,11 @@ package "collectd" do
 end unless platform?('centos')
 
 # If YUM, lock this collectd package so it can't be updated
-if node[:platform] =~ /redhat|centos/
+if node['platform'] =~ /redhat|centos/
   lockfile = "/etc/yum.repos.d/Epel.repo"
   bash "Lock package - YUM" do
     flags "-ex"
-    only_if { `grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
+    only_if { `file #{lockfile} && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
     code <<-EOF
       echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> #{lockfile}
     EOF
