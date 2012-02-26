@@ -24,17 +24,12 @@
 
 log 'Install RightScale Tools.'
 
-SANDBOX_BIN_DIR = '/opt/rightscale/sandbox/bin'
-
-unless File.exists?(SANDBOX_BIN_DIR)
-  log 'RightLink sandbox does not exist, skip tools install.'
+if !node.has_key? :rightscale
+  log 'Not attached to RightScale, skipping tags setup.'
   return
 end
 
-unless File.exists?("#{SANDBOX_BIN_DIR}/gem")
-  log 'RightLink sandbox gem_binary does not exist, skip tools install.'
-  return
-end
+package "make"  # needed for 0.8 where build-essential cookbook does not work
 
 gem_package "#{File.join(File.dirname(__FILE__), '..', 'files', 'default', 'right_rackspace-0.0.0.gem')}" do
   gem_binary "#{SANDBOX_BIN_DIR}/gem"
