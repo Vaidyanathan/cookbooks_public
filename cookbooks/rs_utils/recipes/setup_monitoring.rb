@@ -102,15 +102,14 @@ template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   )
 end
 
-# Patch collectd init script, so it uses collectdmon.  
-# Only needed for CentOS, Ubuntu already does this out of the box.
-if node['platform'] == 'centos'
-  remote_file "/etc/init.d/collectd" do
-    source "collectd-init-centos-with-monitor"
-    mode 0755
-    notifies :restart, resources(:service => "collectd")
-  end
-end
+# patch collectd init script, so it uses collectdmon.  
+# only needed for CentOS, Ubuntu already does this out of the box.
+remote_file "/etc/init.d/collectd" do
+  source "collectd-init-centos-with-monitor"
+  mode 0755
+  notifies :restart, resources(:service => "collectd")
+  only_if "which collectdmon"   # only when collectdmon is found installed
+end unless ! platform?('centos')
 
 # set rs monitoring tag to active
 right_link_tag "rs_monitoring:state=active" 
