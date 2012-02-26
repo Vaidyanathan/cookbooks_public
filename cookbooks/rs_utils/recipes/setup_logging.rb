@@ -86,11 +86,11 @@ Dir.glob("/var/log/*").each do |f|
 end
 
 # == Set up log file rotation
-remote_file "/etc/logrotate.conf" do
+cookbook_file "/etc/logrotate.conf" do
   source "logrotate.conf"
 end
   
-remote_file node[:rs_utils][:logrotate_config] do
+cookbook_file node['rs_utils']['logrotate_config'] do
   source "logrotate.d.syslog"
 end
   
@@ -99,4 +99,3 @@ file "/var/log/boot.log"
 
 # == Tag required to activate logging
 right_link_tag "rs_logging:state=active"
-log "Setting logging active tag"
