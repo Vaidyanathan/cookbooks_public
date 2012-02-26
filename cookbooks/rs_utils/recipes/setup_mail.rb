@@ -43,11 +43,9 @@ package "sendmail" do
   notifies :run, resources(:execute => "set_postfix_default_mta"), :immediately
 end
 
-# == Update main.cf (if needed)
-# We make the changes needed for centos, but using the default main.cf 
-# config everywhere else
+# main.cf (only changed for centos)
 template "/etc/postfix/main.cf" do
-  only_if { node.platform == 'centos' }
+  only_if { platform?('centos') }
   source "postfix.main.cf.erb"
   notifies :restart, resources(:service => "postfix"), :delayed
   mode "644"
