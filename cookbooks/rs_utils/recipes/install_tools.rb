@@ -59,7 +59,7 @@ remote_file "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem" 
   notifies :install, resources(:gem_package => "rightscale_tools_public"), :delayed
 end
 
-http_request "HEAD https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem" do
+http_request "GET https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem" do
   message ""
   url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
   if File.exists?("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem")
