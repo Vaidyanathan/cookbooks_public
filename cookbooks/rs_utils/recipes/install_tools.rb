@@ -40,9 +40,17 @@ end
 
 RS_SANDBOX_GEM_BINARY="/opt/rightscale/sandbox/bin/gem"
 
-# right_rackspace
+# right_rackspace (in rubygems.org repos but fails install into sandbox on 5.6/0.8)
 gem_package "right_rackspace" do
+  source "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"
   gem_binary "#{RS_SANDBOX_GEM_BINARY}"
+  action :nothing
+end
+
+remote_file "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem" do
+  source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
+  mode "0775"
+  notifies :install, resources(:gem_package => "right_rackspace"), :delayed
 end
 
 # rightscale_tools_public (not yet in rubygems.org repos; http_request is also too limited in 0.8.x)
