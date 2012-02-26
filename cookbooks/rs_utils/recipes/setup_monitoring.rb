@@ -57,13 +57,6 @@ end
 # add rrd library for ubuntu
 package "librrd4" if platform?('ubuntu')
 
-arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
-type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
-installed_ver = (node[:platform] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
-installed = (installed_ver == "") ? false : true
-log 'Collectd package not installed' unless installed
-log "collectd installed: #{installed_ver}" if installed
-
 # collectd main configuration file
 template node['rs_utils']['collectd_config'] do
   backup 5
@@ -113,6 +106,17 @@ if node['platform'] =~ /redhat|centos/
     code <<-EOF
       echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo
     EOF
+  end
+end
+
+ruby_block "collectd_info" do
+  block do
+    arch = (node['kernel']['machine'] == "x86_64") ? "64" : "i386"
+    type = (node['platform'] == 'ubuntu') ? "deb" : "rpm"
+    installed_ver = (node['platform'] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
+    installed = (installed_ver == "") ? false : true
+    Chef::Log.info('collectd package not installed.') unless installed
+    Chef::Log.info("collectd installed: #{installed_ver}") if installed
   end
 end
 
