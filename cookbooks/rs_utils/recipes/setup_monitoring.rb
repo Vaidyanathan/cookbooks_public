@@ -41,12 +41,9 @@ directory "node['rs_utils']['collectd_plugin_dir']"
 
 # lock the collectd package so it can't be installed from epel (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
-  bash "yum_exclude_package_collectd" do
-    flags "-ex"
-    only_if { `file /etc/yum.repos.d/Epel.repo && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
-    code <<-EOF
-      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo
-    EOF
+  execute "yum_exclude_package_collectd" do
+    not_if "[ -e /etc/yum.repos.d/Epel.repo ] && grep 'exclude=collectd' /etc/yum.repos.d/Epel.repo > /dev/null 2>&1"
+    command 'echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo'
   end
 end
 
