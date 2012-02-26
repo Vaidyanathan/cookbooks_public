@@ -112,7 +112,7 @@ ruby_block "collectd_info" do
     installed_ver = (node['platform'] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
     installed = (installed_ver == "") ? false : true
     Chef::Log.info('collectd package not installed.') unless installed
-    Chef::Log.info("collectd installed: #{installed_ver}") if installed
+    Chef::Log.info("collectd #{installed_ver} installed.") if installed
   end
 end
 
