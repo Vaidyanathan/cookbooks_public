@@ -52,7 +52,7 @@ default[:rs_utils][:process_list_ary] = [ "init" ]
 # Setup Distro dependent variables
 #
 case platform
-when "redhat","centos","fedora","suse"
+when "redhat","centos","fedora","suse","arch"
   rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog"
   rs_utils[:collectd_config] = "/etc/collectd.conf"
   rs_utils[:collectd_plugin_dir] = "/etc/collectd.d"
