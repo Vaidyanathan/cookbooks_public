@@ -52,7 +52,9 @@ end
 
 package "librrd4" if platform?('ubuntu')
 
-service "collectd"
+service "collectd" do
+  action :enable    # ensure the service is enabled after install
+end
 
 arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
 type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
