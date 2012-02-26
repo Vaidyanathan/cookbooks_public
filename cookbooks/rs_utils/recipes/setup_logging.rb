@@ -70,7 +70,7 @@ template "/etc/syslog-ng/syslog-ng.conf" do
   notifies :restart, resources(:service => "syslog-ng")
 end
 
-# == Ensure everything in /var/log is owned by root, not syslog.
+# ensure everything in /var/log is owned by root, not syslog
 Dir.glob("/var/log/*").each do |f|
   if ::File.directory?(f)
     directory f do 
@@ -85,7 +85,7 @@ Dir.glob("/var/log/*").each do |f|
   end
 end
 
-# == Set up log file rotation
+# setup log file rotation (this should be moved a logrotate recipe)
 cookbook_file "/etc/logrotate.conf" do
   source "logrotate.conf"
 end
@@ -93,9 +93,9 @@ end
 cookbook_file node['rs_utils']['logrotate_config'] do
   source "logrotate.d.syslog"
 end
-  
-# == Fix /var/log/boot.log issue
+
+# fix/workaround for /var/log/boot.log issue
 file "/var/log/boot.log" 
 
-# == Tag required to activate logging
+# tag required to activate logging
 right_link_tag "rs_logging:state=active"
