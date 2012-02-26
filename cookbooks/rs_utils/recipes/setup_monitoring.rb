@@ -53,9 +53,7 @@ package "collectd" do
 end unless ! node['platform'] =~ /redhat|centos/
 
 package "collectd" do unless node['platform'] =~ /redhat|centos/
-
-# add rrd library for ubuntu
-package "librrd4" if platform?('ubuntu')
+package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
 
 service "collectd" do
   action :enable  # ensure the service is enabled
@@ -74,7 +72,7 @@ template node['rs_utils']['collectd_config'] do
   )
 end
 
-# == Create plugin conf dir
+# plugin conf dir
 directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   owner "root"
   group "root"
@@ -82,7 +80,7 @@ directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   action :create
 end
 
-# == Install a Nightly Crontask to Restart Collectd 
+# install a nightly cron to restart collectd
 # Add the task to /etc/crontab, at 04:00 localtime.
 cron "collectd" do
   command "service collectd restart > /dev/null"
