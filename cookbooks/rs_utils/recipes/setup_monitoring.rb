@@ -62,7 +62,7 @@ type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
 installed_ver = (node[:platform] == "centos") ? `rpm -q --queryformat %{VERSION} collectd`.strip : `dpkg-query --showformat='${Version}' -W collectd`.strip 
 installed = (installed_ver == "") ? false : true
 log 'Collectd package not installed' unless installed
-log "Checking installed collectd version: installed #{installed_ver}" if installed
+log "collectd installed: #{installed_ver}" if installed
 
 # collectd main configuration file
 template node['rs_utils']['collectd_config'] do
