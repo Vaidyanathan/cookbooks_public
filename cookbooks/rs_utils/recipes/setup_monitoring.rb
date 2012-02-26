@@ -28,17 +28,27 @@ if !node.has_key? :rightscale
   return
 end
 
+# patch collectd init script, so it uses collectdmon.  
+# only needed for CentOS, Ubuntu already does this out of the box.
+cookbook_file "/etc/init.d/collectd" do
+  source "collectd-init-centos-with-monitor"
+  mode 0755
+  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
+  action :nothing
+end
+
 # install_collectd_with_disabled_epel
 package "collectd" do
   only_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
   options "--disablerepo=epel --disablerepo=rightscale-epel"
+  notifies :create, resources(:cookbook_file => "/etc/init.d/collectd")
 end unless ! platform?('centos')
 
 package "collectd" do
   not_if "yum repolist | grep 'epel ' | grep rightscale-epel > /dev/null 2>&1"
 end
 
-# If YUM, lock this collectd package so it can't be updated
+# lock this collectd package so it can't be updated (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
   lockfile = "/etc/yum.repos.d/Epel.repo"
   bash "Lock package - YUM" do
@@ -50,11 +60,8 @@ if node['platform'] =~ /redhat|centos/
   end
 end
 
+# add rrd library for ubuntu
 package "librrd4" if platform?('ubuntu')
-
-service "collectd" do
-  action :enable    # ensure the service is enabled after install
-end
 
 arch = (node[:kernel][:machine] == "x86_64") ? "64" : "i386"
 type = (node[:platform] == 'ubuntu') ? "deb" : "rpm"
@@ -104,14 +111,9 @@ template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
   )
 end
 
-# patch collectd init script, so it uses collectdmon.  
-# only needed for CentOS, Ubuntu already does this out of the box.
-cookbook_file "/etc/init.d/collectd" do
-  source "collectd-init-centos-with-monitor"
-  mode 0755
-  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
-  notifies :restart, resources(:service => "collectd")
-end unless ! platform?('centos')
+service "collectd" do
+  action [ :enable, :start ]  # ensure the service is enabled after install
+end
 
 # set rs monitoring tag to active
 right_link_tag "rs_monitoring:state=active" 
