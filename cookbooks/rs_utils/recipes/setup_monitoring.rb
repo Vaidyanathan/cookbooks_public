@@ -50,7 +50,7 @@ end
 # notify custom init script (to enable collectdmon)for redhat/centos)
 package "collectd" do
   notifies :create, resources(:cookbook_file => "/etc/init.d/collectd"), :immediately
-end unless ! node['platform'] =~ /redhat|centos/
+end if node['platform'] =~ /redhat|centos/
 
 package "collectd" do unless node['platform'] =~ /redhat|centos/
 package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
