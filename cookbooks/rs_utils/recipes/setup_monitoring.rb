@@ -37,6 +37,8 @@ cookbook_file "/etc/init.d/collectd" do
   action :nothing
 end
 
+directory "node['rs_utils']['collectd_plugin_dir']"
+
 # install collectd (with_disabled_epel if required for redhat/centos)
 package "collectd" do
   only_if "yum repolist | grep epel > /dev/null 2>&1"
@@ -55,7 +57,7 @@ if node['platform'] =~ /redhat|centos/
     only_if { `file #{lockfile} && grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
     code <<-EOF
       lockfile=/etc/yum.repos.d/Epel.repo
-      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> #{lockfile}
+      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> "$lockfile"
     EOF
   end
 end
