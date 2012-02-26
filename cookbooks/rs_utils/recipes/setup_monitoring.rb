@@ -28,12 +28,26 @@ if !node.has_key? :rightscale
   return
 end
 
-if system('yum repolist | grep epel | grep rightscale-epel') and platform?('centos')
-  execute "install_collectd_with_disabled_epel" do
-    command "yum --disablerepo=epel --disablerepo=rightscale-epel install collectd"
+# install_collectd_with_disabled_epel
+package "collectd" do
+  only_if "yum repolist | grep epel | grep rightscale-epel"
+  options "--disablerepo=epel --disablerepo=rightscale-epel"
+end unless ! platform?('centos')
+
+package "collectd" do
+  not_if "yum repolist | grep epel | grep rightscale-epel"
+end unless platform?('centos')
+
+# If YUM, lock this collectd package so it can't be updated
+if node[:platform] =~ /redhat|centos/
+  lockfile = "/etc/yum.repos.d/Epel.repo"
+  bash "Lock package - YUM" do
+    flags "-ex"
+    only_if { `grep -c 'exclude=collectd' /etc/yum.repos.d/Epel.repo`.strip == "0" }
+    code <<-EOF
+      echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> #{lockfile}
+    EOF
   end
-else
-  package "collectd"
 end
 
 package "librrd4" if platform?('ubuntu')
