@@ -36,7 +36,7 @@ end unless ! platform?('centos')
 
 package "collectd" do
   not_if "yum repolist | grep epel | grep rightscale-epel"
-end unless platform?('centos')
+end
 
 # If YUM, lock this collectd package so it can't be updated
 if node['platform'] =~ /redhat|centos/
