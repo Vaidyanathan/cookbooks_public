@@ -47,15 +47,12 @@ if node['platform'] =~ /redhat|centos/
   end
 end
 
-# install collectd (with_disabled_epel if required for redhat/centos)
+# notify custom init script (to enable collectdmon)for redhat/centos)
 package "collectd" do
-  options "--disablerepo=epel"
-  notifies :create, resources(:cookbook_file => "/etc/init.d/collectd")
+  notifies :create, resources(:cookbook_file => "/etc/init.d/collectd"), :immediately
 end unless ! node['platform'] =~ /redhat|centos/
 
-package "collectd" do
-  not_if "yum repolist | grep epel > /dev/null 2>&1"
-end unless node['platform'] =~ /redhat|centos/
+package "collectd" do unless node['platform'] =~ /redhat|centos/
 
 # add rrd library for ubuntu
 package "librrd4" if platform?('ubuntu')
