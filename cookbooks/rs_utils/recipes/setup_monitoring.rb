@@ -46,7 +46,7 @@ end unless ! node['platform'] =~ /redhat|centos/
 
 package "collectd" do
   not_if "yum repolist | grep epel > /dev/null 2>&1"
-end
+end unless node['platform'] =~ /redhat|centos/
 
 # lock this collectd package so it can't be updated (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
@@ -61,7 +61,7 @@ if node['platform'] =~ /redhat|centos/
 end
 
 service "collectd" do
-  action :nothing
+  action :enable  # ensure the service is enabled
 end
 
 # add rrd library for ubuntu
@@ -74,11 +74,11 @@ installed = (installed_ver == "") ? false : true
 log 'Collectd package not installed' unless installed
 log "Checking installed collectd version: installed #{installed_ver}" if installed
 
-# == Generate config file 
+# collectd main configuration file
 template node['rs_utils']['collectd_config'] do
   backup 5
   source "collectd.config.erb"
-  notifies :restart, resources(:service => "collectd")
+  notifies :restart, resources(:service => "collectd"), :delayed
   variables(
     :sketchy_hostname => node['rightscale']['servers']['sketchy']['hostname'],
     :plugins => node.rs_utils.plugin_list_ary,
@@ -105,18 +105,14 @@ end
 
 # == Monitor Processes from Script Input 
 # Write the process file into the include directory from template.
-template File.join(node[:rs_utils][:collectd_plugin_dir], 'processes.conf') do
+template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
   backup false
   source "processes.conf.erb"
-  notifies :restart, resources(:service => "collectd")
+  notifies :restart, resources(:service => "collectd"), :delayed
   variables(
     :monitor_procs => node.rs_utils.process_list_ary,
-    :procs_match => node.rs_utils.process_match_list
+    :procs_match => node['rs_utils.process_match_list']
   )
-end
-
-service "collectd" do
-  action [ :enable, :start ]  # ensure the service is enabled after install
 end
 
 # set rs monitoring tag to active
