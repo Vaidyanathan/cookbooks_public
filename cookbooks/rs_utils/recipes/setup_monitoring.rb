@@ -35,6 +35,12 @@ cookbook_file "/etc/init.d/collectd" do
   mode 0755
   only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
   action :nothing
+end or
+remote_file "/etc/init.d/collectd" do
+  source "collectd-init-centos-with-monitor"
+  mode 0755
+  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
+  action :nothing
 end
 
 directory "node['rs_utils']['collectd_plugin_dir']"
