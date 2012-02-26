@@ -29,7 +29,7 @@ if !node.has_key? :rightscale
   return
 end
 
-package "make"  # needed for 0.8 where build-essential cookbook does not work
+package "make"  # needed for 0.8 where build-essential cookbook does not work, too old
 
 directory "/var/rightscale/cache/rubygems" do
   mode "0775"
@@ -45,7 +45,7 @@ gem_package "right_rackspace" do
   gem_binary "#{RS_SANDBOX_GEM_BINARY}"
 end
 
-# rightscale_tools_public (not yet in rubygems.org repos)
+# rightscale_tools_public (not yet in rubygems.org repos; http_request is also too limited in 0.8.x)
 gem_package "rightscale_tools_public" do
   source "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"
   gem_binary "#{RS_SANDBOX_GEM_BINARY}"
@@ -54,16 +54,6 @@ end
 
 remote_file "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem" do
   source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
-  action :nothing
-  mode "07775"
+  mode "0775"
   notifies :install, resources(:gem_package => "rightscale_tools_public"), :delayed
-end
-
-http_request "GET https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem" do
-  message ""
-  url "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
-  if File.exists?("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem")
-    headers "If-Modified-Since" => File.mtime("/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem").httpdate
-  end
-  notifies :create, resources(:remote_file => "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"), :immediately
 end
