@@ -22,18 +22,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# == Only setup remote logging for ec2 clouds.  
-#
-# Can not setup other clouds until they have access to our lumberjack servers.
-# All non-ec2 clouds will use default syslog-ng configuration
-#
-
 log 'Setup RightScale remote syslog logging.'
 
 unless node.has_key? :rightscale
   log 'Not attached to RightScale, skipping logging setup.'
   return
 end
+
+# todo: add a return if in non-EC2 as only ec2 is supported for lumberjacks at this time
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
 if platform?('centos', 'redhat')
