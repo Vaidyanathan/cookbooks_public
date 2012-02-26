@@ -30,12 +30,6 @@ end
 
 # patch collectd init script, so it uses collectdmon.  
 # only needed for CentOS, Ubuntu already does this out of the box.
-cookbook_file "/etc/init.d/collectd" do
-  source "collectd-init-centos-with-monitor"
-  mode 0755
-  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
-  action :nothing
-end or
 remote_file "/etc/init.d/collectd" do
   source "collectd-init-centos-with-monitor"
   mode 0755
@@ -55,7 +49,7 @@ end
 
 # notify custom init script (to enable collectdmon)for redhat/centos)
 package "collectd" do
-  notifies :create, resources(:cookbook_file => "/etc/init.d/collectd"), :immediately
+  notifies :create, resources(:remote_file => "/etc/init.d/collectd"), :immediately
 end if node['platform'] =~ /redhat|centos/
 
 package "collectd" unless node['platform'] =~ /redhat|centos/
