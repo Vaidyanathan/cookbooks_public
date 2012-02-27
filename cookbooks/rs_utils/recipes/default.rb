@@ -26,7 +26,7 @@ package "debian-helper-scripts" if node['platform'] == 'ubuntu' && node['lsb.cod
 
 # recipes for a default install (setup_tools is not included as its problematic/hits bugs and gems are not in a repos)
 include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::hostname"
+include_recipe "rs_utils::setup_hostname"
 include_recipe "rs_utils::setup_server_tags"
 include_recipe "rs_utils::setup_monitoring"
 include_recipe "rs_utils::setup_logging"
