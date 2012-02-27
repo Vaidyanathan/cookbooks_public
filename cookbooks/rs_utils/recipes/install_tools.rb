@@ -38,11 +38,12 @@ directory "/var/rightscale/cache/rubygems" do
   recursive true
 end
 
-#RS_SANDBOX_GEM_BINARY="/opt/rightscale/sandbox/bin/gem"
+RS_SANDBOX_GEM_BINARY="/opt/rightscale/sandbox/bin/gem"
 
 # right_rackspace (in rubygems.org repos but fails install into sandbox on 5.6/0.8)
 gem_package "right_rackspace" do
   source "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"
+  gem_binary "#{RS_SANDBOX_GEM_BINARY}"
   action :nothing
 end
 
@@ -55,6 +56,7 @@ end
 # rightscale_tools_public (not yet in rubygems.org repos; http_request is also too limited in 0.8.x)
 gem_package "rightscale_tools_public" do
   source "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem"
+  gem_binary "#{RS_SANDBOX_GEM_BINARY}"
   action :nothing
 end
 
