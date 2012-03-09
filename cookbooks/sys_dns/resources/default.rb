@@ -5,7 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-actions :set_private
+actions :set_private, :set_public
 
 attribute :id, :kind_of => String
 attribute :user, :kind_of => String
