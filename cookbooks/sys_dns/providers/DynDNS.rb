@@ -12,3 +12,11 @@ action :set_private do
 
   log "==================== sys_dns(:set_private) DynDNS   END ==================== "
 end
+
+action :set_public do
+  log "==================== sys_dns(:set_public) DynDNS BEGIN ==================== "
+
+  RightScale::DnsTools::DynDNS.new(Chef::Log).action_set(new_resource.id, new_resource.user, new_resource.password, new_resource.address)
+
+  log "==================== sys_dns(:set_public) DynDNS   END ==================== "
+end
