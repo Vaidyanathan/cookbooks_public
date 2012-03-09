@@ -9,6 +9,7 @@ depends "rs_utils"
 
 recipe "sys_dns::default", "Installs Amazon's dnscurl.pl utility."
 recipe "sys_dns::do_set_private", "Sets the dynamic DNS entry to the first private IP of the server."
+recipe "sys_dns::do_set_public", "Sets the dynamic DNS entry to the first public IP of the server."
 
 attribute "sys_dns/choice",
   :display_name => "DNS Service Provider",
