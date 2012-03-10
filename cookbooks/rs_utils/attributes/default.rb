@@ -48,6 +48,8 @@ default[:rs_utils][:plugin_list_ary] = [
 default[:rs_utils][:process_list] = ""
 default[:rs_utils][:process_list_ary] = [ "init" ]
 
+set_unless['rightscale']['servers']['sketchy']['hostname'] = ''
+
 #
 # Setup Distro dependent variables
 #
@@ -60,6 +62,10 @@ when "debian","ubuntu"
   rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog-ng"
   rs_utils[:collectd_config] = "/etc/collectd/collectd.conf"
   rs_utils[:collectd_plugin_dir] = "/etc/collectd/conf"
+when "archlinux"
+  rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog-ng"
+  rs_utils[:collectd_config] = "/etc/collectd.conf"
+  rs_utils[:collectd_plugin_dir] = "/etc/collect.d"
 end
 
 case node[:kernel][:machine]
