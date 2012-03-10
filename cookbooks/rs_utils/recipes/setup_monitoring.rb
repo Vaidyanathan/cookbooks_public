@@ -23,10 +23,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 log 'Setup RightScale monitoring.'
-if !node.has_key? :rightscale
-  log 'Not attached to RightScale, skipping monitoring setup.'
-  return
-end
+
+return if platform?('archlinux')
 
 # patch collectd init script, so it uses collectdmon.  
 # only needed for CentOS, Ubuntu already does this out of the box.
@@ -42,7 +40,7 @@ directory "node['rs_utils']['collectd_plugin_dir']"
 # exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
   execute "yum_exclude_package_collectd" do
-    not_if "[ -e /etc/yum.repos.d/Epel.repo ] && grep 'exclude=collectd' /etc/yum.repos.d/Epel.repo > /dev/null 2>&1"
+    not_if '[ -e /etc/yum.repos.d/Epel.repo ] && grep "\[epel\]" /etc/yum.repos.d/Epel.repo && grep "exclude=collectd" /etc/yum.repos.d/Epel.repo > /dev/null 2>&1'
     command 'echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo'
   end
 end
@@ -66,7 +64,7 @@ template node['rs_utils']['collectd_config'] do
   source "collectd.config.erb"
   notifies :restart, resources(:service => "collectd"), :delayed
   variables(
-    :sketchy_hostname => node['rightscale']['servers']['sketchy']['hostname'],
+    :sketchy_hostname => "#{node['rightscale']['servers']['sketchy']['hostname']}",
     :plugins => node.rs_utils.plugin_list_ary,
     :instance_uuid => node['rightscale']['instance_uuid'],
     :collectd_include_dir => node['rs_utils']['collectd_plugin_dir']
@@ -102,6 +100,8 @@ template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
 end
 
 # set rs monitoring tag to active
-right_link_tag "rs_monitoring:state=active" 
+if node.has_key? :rightscale
+  right_link_tag "rs_monitoring:state=active"
+end
 
 log "RightScale monitoring setup complete."
