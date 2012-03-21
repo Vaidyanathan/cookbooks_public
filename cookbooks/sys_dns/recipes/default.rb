@@ -1,11 +1,9 @@
-#
 # Cookbook Name:: sys_dns
-#
+# Recipe:: default
+
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
-
-rs_utils_marker :begin
 
 package value_for_platform(
     [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
@@ -33,11 +31,9 @@ remote_file "/opt/rightscale/dns/dnscurl.pl" do
 end
 
 sys_dns "default" do
-  provider "sys_dns_#{node[:sys_dns][:choice]}"
-  user node[:sys_dns][:user]
-  password node[:sys_dns][:password]
+  provider "sys_dns_#{node['sys_dns']['choice']}"
+  user node['sys_dns']['user']
+  password node['sys_dns']['password']
   persist true
   action :nothing
 end
-
-rs_utils_marker :end
