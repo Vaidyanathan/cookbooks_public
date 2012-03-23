@@ -22,5 +22,5 @@ end
 
 execute "set_public_ip_tag" do
   command "rs_tag --add 'node:public_ip=#{public_ip}'"
-  only_if "which rs_tag"
+  only_if "which rs_tag > /dev/null 2>&1"
 end

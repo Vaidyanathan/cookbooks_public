@@ -35,5 +35,5 @@ end
 
 execute "set_private_ip_tag" do
   command "rs_tag --add 'node:private_ip=#{private_ip}'"
-  only_if "which rs_tag"
+  only_if "which rs_tag > /dev/null 2>&1"
 end
