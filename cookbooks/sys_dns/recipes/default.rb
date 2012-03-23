@@ -5,17 +5,17 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-#package value_for_platform(
-#    [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
-#    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-SHA1" },
-#    "arch" => { "default" => "perl-digest-sha1" }
-#)
+package value_for_platform(
+    [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
+    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-SHA1" },
+    "arch" => { "default" => "perl-digest-sha1" }
+)
 
-#package value_for_platform(
-#    [ "ubuntu", "debian" ] => { "default" => "libdigest-hmac-perl" },
-#    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-HMAC" },
-#    [ "archlinux" ] => { "default" => "perl-digest-hmac" }
-#  )
+package value_for_platform(
+    [ "ubuntu", "debian" ] => { "default" => "libdigest-hmac-perl" },
+    [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-HMAC" },
+    [ "archlinux" ] => { "default" => "perl-digest-hmac" }
+)
 
 directory "/opt/rightscale/dns" do
   owner "root"
