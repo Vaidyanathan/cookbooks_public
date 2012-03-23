@@ -107,6 +107,7 @@ EOF
     class DME < DNS
       def action_set(id, user, password, address)
         query="username=#{CGI::escape(user)}&password=#{CGI::escape(password)}&id=#{id}&ip=#{CGI::escape(address)}"
+        #Chef::Log.info("Query: #{query}")
         result = `curl -S -s -o - -f -g 'https://www.dnsmadeeasy.com/servlet/updateip?#{query}'`
 
         if( result =~ /success/ || result =~ /error-record-ip-same/   ) then
