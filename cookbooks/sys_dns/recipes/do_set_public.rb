@@ -17,3 +17,8 @@ sys_dns "default" do
   address public_ip
   action :set_public
 end
+
+execute "set_public_ip_tag" do
+  command "rs_tag --add 'node:public_ip=#{public_ip}'"
+  only_if "which rs_tag"
+end
