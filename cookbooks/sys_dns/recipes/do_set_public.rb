@@ -5,6 +5,8 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+include_recipe "sys_dns"
+
 if ! node.has_key?('cloud')
   public_ip=`curl -s http://icanhazip.com/`.strip
   log "Detected public IP: #{public_ip}"
