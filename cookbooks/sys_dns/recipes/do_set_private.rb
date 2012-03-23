@@ -22,7 +22,7 @@ end
 if ! node.has_key?('cloud')
   private_ip = "#{local_ip}"
 else
-  public_ip = node['cloud']['public_ips'][0]
+  private_ip = node['cloud']['public_ips'][0]
 end
 
 log "Detected private IP: #{private_ip}"
