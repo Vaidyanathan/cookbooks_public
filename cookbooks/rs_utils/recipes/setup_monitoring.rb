@@ -35,7 +35,7 @@ remote_file "/etc/init.d/collectd" do
   action :nothing
 end
 
-directory "node['rs_utils']['collectd_plugin_dir']"
+directory node['rs_utils']['collectd_plugin_dir']
 
 # exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
@@ -45,12 +45,12 @@ if node['platform'] =~ /redhat|centos/
   end
 end
 
+package "collectd"
+
 # notify custom init script (to enable collectdmon)for redhat/centos)
 package "collectd" do
   notifies :create, resources(:remote_file => "/etc/init.d/collectd"), :immediately
 end if node['platform'] =~ /redhat|centos/
-
-package "collectd" unless node['platform'] =~ /redhat|centos/
 
 package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
 
