@@ -9,8 +9,7 @@ unless platform?('mac_os_x')
 package value_for_platform(
     [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
     [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-SHA1" },
-    [ "archlinux" ] => { "default" => "perl-digest-sha1" },
-    [ "darwin" ] => { "default" => "perl-digest-sha1" }
+    [ "archlinux" ] => { "default" => "perl-digest-sha1" }
 )
 
 package value_for_platform(
