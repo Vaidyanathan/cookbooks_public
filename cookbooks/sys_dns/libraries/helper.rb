@@ -34,7 +34,7 @@ module RightScale
     },
 );
 EOF
-        secrets_filename="/root/.aws-secrets"
+        secrets_filename="#{File.expand_path('~')}/.aws-secrets"
         File.open(secrets_filename, "w") { |f| f.write aws_cred }
         File.chmod(0600, secrets_filename)
 
@@ -90,7 +90,9 @@ EOF
         result = ""
         # Simple retry loop, sometimes the DNS call will flake out..
         5.times do |attempt|
-          result = `/opt/rightscale/dns/dnscurl.pl --keyfile #{secrets_filename} --keyname my-aws-account -- -X POST -H "Content-Type: text/xml; charset=UTF-8" --upload-file #{cmd_filename} #{endpoint}hostedzone/#{zone_id}/rrset`
+          cmd = "/opt/rightscale/dns/dnscurl.pl --keyfile #{secrets_filename} --keyname my-aws-account -- -X POST -H \"Content-Type: text/xml; charset=UTF-8\" --upload-file #{cmd_filename} #{endpoint}hostedzone/#{zone_id}/rrset 2>&1 | tee /var/log/dnsupdate.log"
+          File.open('/var/log/dnsupdate.log', "a") { |f| f.write "\n#{cmd}\n#{File.open("/tmp/modify.xml", "rb").read}" }
+          result = `#{cmd}`
           break if result =~ /ChangeResourceRecordSetsResponse/
           @logger.info("DNS change not successful - waiting then retrying - attempt number #{attempt}")
           sleep 5
