@@ -35,7 +35,13 @@ remote_file "/etc/init.d/collectd" do
   action :nothing
 end
 
-directory node['rs_utils']['collectd_plugin_dir']
+# == Create plugin conf dir
+directory "#{node[:rs_utils][:collectd_plugin_dir]}" do
+  owner "root"
+  group "root"
+  recursive true
+  action :create
+end
 
 # exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
