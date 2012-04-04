@@ -5,6 +5,8 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+if ! node['platform'] == 'archlinux'    # DEBUG: Platform archlinux not found, using all defaults. (Unsupported platform?)
+
 package value_for_platform(
     [ "ubuntu", "debian" ] => { "default" => "libdigest-sha1-perl" },
     [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-SHA1" },
@@ -16,6 +18,8 @@ package value_for_platform(
     [ "centos", "redhat", "suse" ] => { "default" => "perl-Digest-HMAC" },
     [ "archlinux" ] => { "default" => "perl-digest-hmac" }
 )
+
+end
 
 directory "/opt/rightscale/dns" do
   owner "root"
