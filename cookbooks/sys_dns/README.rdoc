@@ -38,6 +38,18 @@ For additional information:
 
 * Currently only the first private IP address can be set.
 
+== TROUBLESHOOTING
+
+DNSMadeEasy:
+“error-auth” Invalid username or password, or invalid IP syntax
+“error-auth-suspend” User has had his / her account suspended. This is if I get complaints about them or if they misuse the service.
+“error-auth-voided” User has had his / her account revoked. Same thing as suspended but this is permanent.
+“error-record-invalid” Record does not exist in the system. / Unable to update record in system database.
+“error-record-auth” User does not have access to this record.
+“error-record-ip-same” IP never changed so nothing was done.
+“error-system” General system error which is caught and recognized by the system.
+“error” General system error unrecognized by the system.
+“success” The one and only good message.
 
 = LICENSE
 

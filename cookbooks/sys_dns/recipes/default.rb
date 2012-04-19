@@ -22,6 +22,8 @@ else
   root_group = 'wheel'
 end
 
+end
+
 directory "/opt/rightscale/dns" do
   owner "root"
   group root_group
