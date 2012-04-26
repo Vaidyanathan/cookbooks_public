@@ -20,7 +20,7 @@ sys_dns "default" do
   action :set_public
 end
 
-execute "set_public_ip_tag" do
-  command "rs_tag --add 'node:public_ip=#{public_ip}'"
-  only_if "which rs_tag > /dev/null 2>&1"
+if defined?(RightScale)
+  log "Set RightScale tag for public IP."
+  right_link_tag "node:public_ip=#{public_ip}"
 end
