@@ -40,6 +40,7 @@ end
 
 RS_SANDBOX_GEM_BINARY = "/opt/rightscale/sandbox/bin/gem"
 RS_UTILS_FILES_BRANCH = 'master'
+RS_TOOLS_PUBLIC_VERSION = '1.1.3'
 
 # right_rackspace (in rubygems.org repos but fails install into sandbox on 5.6/0.8)
 gem_package "right_rackspace" do
@@ -62,7 +63,7 @@ gem_package "rightscale_tools_public" do
 end
 
 remote_file "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem" do
-  source "https://github.com/rightscale/cookbooks_public/blob/#{RS_UTILS_FILES_BRANCH}/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
+  source "https://github.com/rightscale/cookbooks_public/blob/#{RS_UTILS_FILES_BRANCH}/cookbooks/rs_utils/files/default/rightscale_tools_public-#{RS_TOOLS_PUBLIC_VERSION}.gem"
   mode "0775"
   notifies :install, resources(:gem_package => "rightscale_tools_public"), :delayed
 end
