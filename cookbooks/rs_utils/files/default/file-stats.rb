@@ -1,4 +1,12 @@
 #! /usr/bin/ruby
+# 
+# Cookbook Name:: rs_utils
+#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+
+#
 # Arguments: first the hostname to use to report the stats (instance ID if in EC2)
 #            followed by a list of filenames to report
 
@@ -43,13 +51,15 @@ loop do
       size = File.size(f)
       now = Time.now
       age = (now - File.mtime(f)).to_i
-      base = File.basename(f, '.*').gsub(/-/, '_')
-      print "PUTVAL #{hostname}/file-#{base}/gauge-size interval=#{sample_interval} #{now.to_i}:#{size}\n"
-      print "PUTVAL #{hostname}/file-#{base}/gauge-age interval=#{sample_interval} #{now.to_i}:#{age}\n"
+    else
+      size="NaN"
+      age="NaN"
     end
+    base = File.basename(f, '.*').gsub(/-/, '_')
+    print "PUTVAL #{hostname}/file-#{base}/gauge-size interval=#{sample_interval} #{now.to_i}:#{size}\n"
+    print "PUTVAL #{hostname}/file-#{base}/gauge-age interval=#{sample_interval} #{now.to_i}:#{age}\n"
   end
 
   STDOUT.flush
   sleep sample_interval
 end
-
