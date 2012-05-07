@@ -38,7 +38,8 @@ directory "/var/rightscale/cache/rubygems" do
   recursive true
 end
 
-RS_SANDBOX_GEM_BINARY="/opt/rightscale/sandbox/bin/gem"
+RS_SANDBOX_GEM_BINARY = "/opt/rightscale/sandbox/bin/gem"
+RS_UTILS_FILES_BRANCH = 'master'
 
 # right_rackspace (in rubygems.org repos but fails install into sandbox on 5.6/0.8)
 gem_package "right_rackspace" do
@@ -48,7 +49,7 @@ gem_package "right_rackspace" do
 end
 
 remote_file "/var/rightscale/cache/rubygems/right_rackspace-0.0.0.20111110.gem" do
-  source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
+  source "https://github.com/rightscale/cookbooks_public/blob/#{RS_UTILS_FILES_BRANCH}/cookbooks/rs_utils/files/default/right_rackspace-0.0.0.20111110.gem"
   mode "0775"
   notifies :install, resources(:gem_package => "right_rackspace"), :delayed
 end
@@ -61,7 +62,7 @@ gem_package "rightscale_tools_public" do
 end
 
 remote_file "/var/rightscale/cache/rubygems/rightscale_tools_public-1.0.26.gem" do
-  source "https://github.com/rightscale/cookbooks_public/blob/bb0d95a42f2d897768344b2430fe872bd6158a81/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
+  source "https://github.com/rightscale/cookbooks_public/blob/#{RS_UTILS_FILES_BRANCH}/cookbooks/rs_utils/files/default/rightscale_tools_public-1.0.26.gem"
   mode "0775"
   notifies :install, resources(:gem_package => "rightscale_tools_public"), :delayed
 end
