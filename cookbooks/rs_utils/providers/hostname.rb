@@ -118,15 +118,13 @@ ruby_block "show_host_info" do
     Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
     Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
   end
-#  action :nothing
+  action :nothing
 end
 
 # reload ohai hostname plugin for subsequent recipes in the run_list
-#if ! system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4')   # fail on rl 5.6
-#  ohai "reload_hostname_info_from_ohai" do
-#    plugin "hostname"
-#    notifies :create, resources(:ruby_block => "show_host_info"), :delayed
-#  end
-#end
+ohai "reload_hostname_info_from_ohai" do
+  plugin "hostname"
+  notifies :create, resources(:ruby_block => "show_host_info"), :delayed
+end unless system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4')   # known fail on rl 5.6
 
-end
+end # close action :set
