@@ -125,6 +125,7 @@ end
 ohai "reload_hostname_info_from_ohai" do
   plugin "hostname"
   notifies :create, resources(:ruby_block => "show_host_info"), :immediately
-end unless system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4')   # known fail on rl 5.6
+  not_if{ system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4') }   # known fail on rl 5.6
+end
 
 end # close action :set
