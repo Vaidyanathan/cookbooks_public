@@ -24,7 +24,7 @@
 
 log('Setting up RightScale.') { level :debug }
 
-if @RightScale
+if defined?(RightScale)
   package "debian-helper-scripts" if node['platform'] == 'ubuntu' && node['lsb.codename'] == 'hardy'
 
   # recipes for a default install (setup_tools is not included as its problematic/hits bugs and gems are not in a repos)
