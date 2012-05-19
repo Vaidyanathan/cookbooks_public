@@ -22,8 +22,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "postfix"
-service "postfix"
+package "postfix" do
+  not_if { platform?('mac_os_x') }
+end
+
+service "postfix" do
+  not_if { platform?('mac_os_x') }
+end
 
 # postfix package doesn't remove sendmail on redhat distros
 remove_sendmail = value_for_platform(
@@ -58,7 +63,8 @@ directory "/var/spool/oldmail" do
   group "mail"
 end
 
-# Add mail to logrotate
+# Add mail to logrotate (if installed)
 template "/etc/logrotate.d/mail" do
   source "logrotate.d.mail.erb"
+  only_if { File.exists?('/ext/logrotate.d') }
 end
