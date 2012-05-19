@@ -105,27 +105,9 @@ script "set_node_hostname_tag" do
   EOH
 end
 
-# Show the new host/node information (after ohai reload)
-ruby_block "show_host_info" do
-  block do
-    # show new host values from system
-    Chef::Log.info("== New host/node information ==")
-    Chef::Log.info("Hostname: #{`hostname`.strip == '' ? '<none>' : `hostname`.strip}")
-    Chef::Log.info("Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}")
-    Chef::Log.info("Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}")
-    Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}")
-    Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
-    Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
-    Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
-  end
-  action :nothing
-end
-
 # reload ohai hostname plugin for subsequent recipes in the run_list
 ohai "reload_hostname_info_from_ohai" do
   plugin "hostname"
-  notifies :create, resources(:ruby_block => "show_host_info"), :immediately
-  not_if{ system('/opt/rightscale/sandbox/bin/gem list | grep chef | grep 0.8.16.4') }   # known fail on rl 5.6
 end
 
 end # close action :set
