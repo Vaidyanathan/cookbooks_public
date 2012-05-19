@@ -24,7 +24,8 @@
 
 log 'Setup RightScale monitoring.'
 
-return if platform?('archlinux')
+return if ( platform?('archlinux') or platform?('mac_os_x') )
+return unless defined?(RightScale)
 
 # patch collectd init script, so it uses collectdmon.  
 # only needed for CentOS, Ubuntu already does this out of the box.
