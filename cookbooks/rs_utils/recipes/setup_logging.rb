@@ -24,7 +24,7 @@
 
 log 'Setup RightScale remote syslog logging.'
 
-unless node.has_key? :rightscale
+unless defined?(RightScale)
   log 'Not attached to RightScale, skipping logging setup.'
   return
 end
@@ -86,7 +86,7 @@ end
   
 remote_file node['rs_utils']['logrotate_config'] do
   source "logrotate.d.syslog"
-end
+end unless node['rs_utils']['logrotate_config'] == nil
 
 # fix/workaround for /var/log/boot.log issue
 file "/var/log/boot.log" 
