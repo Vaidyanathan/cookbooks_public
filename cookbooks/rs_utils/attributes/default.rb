@@ -66,6 +66,8 @@ when "archlinux"
   rs_utils[:logrotate_config] = "/etc/logrotate.d/syslog-ng"
   rs_utils[:collectd_config] = "/etc/collectd.conf"
   rs_utils[:collectd_plugin_dir] = "/etc/collect.d"
+when "mac_os_x"
+  rs_utils[:logrotate_config] = nil
 end
 
 case node[:kernel][:machine]
