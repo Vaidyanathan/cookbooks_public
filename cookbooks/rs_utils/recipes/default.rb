@@ -22,13 +22,20 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package "debian-helper-scripts" if node['platform'] == 'ubuntu' && node['lsb.codename'] == 'hardy'
+log('Setting up RightScale.') { level :debug }
 
-# recipes for a default install (setup_tools is not included as its problematic/hits bugs and gems are not in a repos)
-include_recipe "rs_utils::setup_timezone"
-include_recipe "rs_utils::setup_hostname"
-include_recipe "rs_utils::setup_server_tags"
-include_recipe "rs_utils::setup_monitoring"
-include_recipe "rs_utils::setup_logging"
-include_recipe "rs_utils::setup_ssh"
-include_recipe "rs_utils::setup_mail"
+if @RightScale
+  package "debian-helper-scripts" if node['platform'] == 'ubuntu' && node['lsb.codename'] == 'hardy'
+
+  # recipes for a default install (setup_tools is not included as its problematic/hits bugs and gems are not in a repos)
+  include_recipe "rs_utils::setup_timezone"
+  include_recipe "rs_utils::setup_hostname"
+  include_recipe "rs_utils::setup_server_tags"
+  include_recipe "rs_utils::setup_monitoring"
+  include_recipe "rs_utils::setup_logging"
+  include_recipe "rs_utils::setup_ssh"
+  include_recipe "rs_utils::setup_mail"
+else
+  log('Not attached to RightScale, skipping.') { level :debug }
+  return
+end
