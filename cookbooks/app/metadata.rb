@@ -18,6 +18,7 @@ attribute "app/setup_db_after_update_code",
   :description => "Whether to run app::setup_db_connection after app::do_update_code (true or false).",
   :required => "optional",
   :choice => ["true", "false"],
+  :default => "true",
   :recipes => [ "app::do_update_code" ]
 
 recipe "app::default", "Adds the appserver:active=true tag to your server which identifies it as an application server. For example, database servers will update its firewall port permissions to accept incoming requests from application servers with this tag."

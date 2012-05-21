@@ -17,6 +17,7 @@
         "true",
         "false"
       ],
+      "default": "true",
       "type": "string",
       "recipes": [
         "app::do_update_code"
