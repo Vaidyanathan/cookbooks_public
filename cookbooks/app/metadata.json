@@ -24,6 +24,20 @@
       ],
       "display_name": "Setup DB after Update Code",
       "description": "Whether to run app::setup_db_connection after app::do_update_code (true or false)."
+    },
+    "app/packages": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": null,
+      "type": "string",
+      "recipes": [
+        "app::default"
+      ],
+      "display_name": "Application additional packages",
+      "description": "An array of additional packages to install for the application."
     }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",

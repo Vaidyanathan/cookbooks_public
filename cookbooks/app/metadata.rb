@@ -21,6 +21,13 @@ attribute "app/setup_db_after_update_code",
   :default => "true",
   :recipes => [ "app::do_update_code" ]
 
+attribute "app/packages",
+  :display_name => "Application additional packages",
+  :description => "An array of additional packages to install for the application.",
+  :required => "optional",
+  :default => nil,
+  :recipes => [ "app::default" ]
+
 recipe "app::default", "Adds the appserver:active=true tag to your server which identifies it as an application server. For example, database servers will update its firewall port permissions to accept incoming requests from application servers with this tag."
 
 recipe "app::do_loadbalancers_allow", "Allows connections from all load balancers within a given listener pool which are tagged with loadbalancer:lb=<applistener_name>.  This script should be run on an application server before it makes a request to be connected to the load balancers."
