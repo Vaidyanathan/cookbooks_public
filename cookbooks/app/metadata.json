@@ -10,6 +10,20 @@
   "name": "app",
   "maintainer_email": "support@rightscale.com",
   "attributes": {
+    "app/setup_db_after_update_code": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+        "true",
+        "false"
+      ],
+      "type": "string",
+      "recipes": [
+        "app::do_update_code"
+      ],
+      "display_name": "Setup DB after Update Code",
+      "description": "Whether to run app::setup_db_connection after app::do_update_code (true or false)."
+    }
   },
   "license": "Copyright RightScale, Inc. All rights reserved.",
   "suggestions": {
