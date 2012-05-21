@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: app
+#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+
 module RightScale
   module App
     module Helper
@@ -28,7 +35,12 @@ module RightScale
       
       # Return the port that this application server listens on
       def self.bind_port()
-        8000 # currently hardcoded
+        node[:app][:port]
+      end
+
+      # Returns array from a comma seperated list
+      def vhosts(vhost_list)
+        return vhost_list.gsub(/\s+/, "").split(",").uniq.each
       end
 
     end
