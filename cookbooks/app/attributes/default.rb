@@ -7,3 +7,5 @@
 
 # By default listen on port 8000
 set_unless[:app][:port] = 8000
+
+default[:app][:setup_db_after_update_code] = 'true'
