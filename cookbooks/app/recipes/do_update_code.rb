@@ -14,4 +14,6 @@ app "default" do
   action :code_update
 end
 
+include_recipe "app::setup_db_connection" if node['app']['setup_db_after_update_code'] == 'true'
+
 rs_utils_marker :end
