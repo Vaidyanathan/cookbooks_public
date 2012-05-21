@@ -18,7 +18,6 @@ app "default" do
   action :install
 end
 
-
 # Let others know we are an appserver
 right_link_tag "appserver:active=true"
 
