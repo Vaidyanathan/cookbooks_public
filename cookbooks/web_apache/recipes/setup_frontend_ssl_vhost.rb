@@ -1,35 +1,22 @@
+#
 # Cookbook Name:: web_apache
-# Recipe:: setup_frontend_ssl_vhost
 #
-# Copyright (c) 2011 RightScale Inc
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
+rs_utils_marker :begin
 
 service "apache2" do
   action :nothing
 end
 
-#TODO:
-# condition for ubuntu
-package "mod_ssl"
+package "mod_ssl" do
+  case node[:platform]
+  when 'ubuntu'
+    action :nothing
+  end
+end
 
 # == Setup Apache vhost on following ports
 https_port = "443"
@@ -47,15 +34,15 @@ end
 # TODO:
 # ubuntu module install
 
-ssl_dir =  "/etc/#{@node[:apache][:config_subdir]}/rightscale.d/key"
+ssl_dir =  "/etc/#{node[:apache][:config_subdir]}/rightscale.d/key"
 
 directory ssl_dir do
   mode "0700"
   recursive true
 end
 
-ssl_certificate_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.crt")
-ssl_key_file = ::File.join(ssl_dir, "#{node[:php][:server_name]}.key")
+ssl_certificate_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.crt")
+ssl_key_file = ::File.join(ssl_dir, "#{node[:web_apache][:server_name]}.key")
 
 template ssl_certificate_file do
   mode "0400"
@@ -70,6 +57,7 @@ end
 if node[:web_apache][:ssl_passphrase]
   Chef::Log.info "Using passphrase"
   bash "decrypt openssl keyfile" do
+    flags "-ex"
     environment({ :OPT_SSL_PASSPHRASE => node[:web_apache][:ssl_passphrase] })
     code "openssl rsa -passin env:OPT_SSL_PASSPHRASE -in #{ssl_key_file} -passout env:OPT_SSL_PASSPHRASE -out #{ssl_key_file}"
   end
@@ -95,6 +83,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   source "ports.conf.erb"
   variables :apache_listen_ports => node[:apache][:listen_ports]
   notifies :restart, resources(:service => "apache2")
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache ssl vhost for PHP
@@ -109,6 +98,7 @@ web_app "#{node[:web_apache][:application_name]}.frontend.https" do
   ssl_certificate_file ssl_certificate_file
   ssl_key_file ssl_key_file
   notifies :restart, resources(:service => "apache2")
+#  notifies :restart, resources(:service => "apache2"), :immediately
 end
 
 # == Configure apache non-ssl vhost for PHP
@@ -118,5 +108,7 @@ web_app "#{node[:web_apache][:application_name]}.frontend.http" do
   docroot node[:web_apache][:docroot]
   vhost_port http_port
   server_name node[:web_apache][:server_name]
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :immediately
 end
+
+rs_utils_marker :end

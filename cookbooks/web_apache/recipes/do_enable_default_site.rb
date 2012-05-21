@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: web_apache
+# Cookbook Name:: app_php
 #
 # Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
@@ -7,6 +7,15 @@
 
 rs_utils_marker :begin
 
-include_recipe "web_apache::install_apache"
+service "apache2" do
+  action :nothing
+end
+
+# disable default vhost
+log 'Enabling deafult vhost'
+apache_site "default" do
+  enable true
+  notifies :reload, resources(:service => "apache2")
+end
 
 rs_utils_marker :end

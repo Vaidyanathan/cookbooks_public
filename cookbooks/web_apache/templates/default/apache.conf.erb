@@ -1,3 +1,14 @@
+# 
+# Cookbook Name:: web_apache
+#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
+# 
+# Managed by RightScale
+# DO NOT EDIT BY HAND
+#
+
 <VirtualHost *:<%= @params[:vhost_port] %>>
   ServerName <%= @params[:server_name] %>
   DocumentRoot <%= @params[:docroot] %>
@@ -14,7 +25,7 @@
 
   RewriteEngine On
   # Uncomment for rewrite debugging
-  #RewriteLog <%= @node[:apache][:log_dir] %>/http_rewrite_log
+  #RewriteLog <%= node[:apache][:log_dir] %>/http_rewrite_log
   #RewriteLogLevel 9
 
   # Enable status page for monitoring purposes
@@ -32,8 +43,8 @@
   RewriteRule ^/(.*)$ http://127.0.0.1:85%{REQUEST_URI} [P,QSA,L]
 
   # Setup the logs in the appropriate directory
-  CustomLog <%= @node[:apache][:log_dir] %>/access_log combined
-  ErrorLog  <%= @node[:apache][:log_dir] %>/error_log
+  CustomLog <%= node[:apache][:log_dir] %>/access_log combined
+  ErrorLog  <%= node[:apache][:log_dir] %>/error_log
 
 	# Serve any existing local files directly (except actionable ones)
 	RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} -f
