@@ -7,7 +7,7 @@
 
 rs_utils_marker :begin
 
-log "  Creating database config for application"
+log " Creating database config for application"
 app "default" do
   database_name        node[:app][:database_name]
   database_user        node[:app][:database_user]
