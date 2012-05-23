@@ -7,7 +7,7 @@ version          "0.0.1"
 
 conflicts "rsyslog"
 
-recipe "rs_utils::default", "Install rightscale_tools and set tags only."
+recipe "rs_utils::default", "Setups up the instance as a RightScale Server including monitoring, logging and meta tags set."
 recipe "rs_utils::setup_logging", "Install and configure RightScale dashboard logging."
 recipe "rs_utils::setup_monitoring", "Install and configure RightScale dashboard monitoring."
 recipe "rs_utils::setup_mail", "Basic mail setup."
