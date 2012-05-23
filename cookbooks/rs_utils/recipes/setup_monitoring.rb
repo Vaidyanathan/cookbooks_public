@@ -36,12 +36,32 @@ remote_file "/etc/init.d/collectd" do
   action :nothing
 end
 
-# == Create plugin conf dir
-directory "#{node[:rs_utils][:collectd_plugin_dir]}" do
+directory "/etc/collectd" do
   owner "root"
   group "root"
   recursive true
   action :create
+end
+
+# == Create plugin conf dir
+directory "#{node['rs_utils']['collectd_plugin_dir']}" do
+  owner "root"
+  group "root"
+  recursive true
+  action :create
+end
+
+# collectd main configuration file
+template node['rs_utils']['collectd_config'] do
+  backup 5
+  source "collectd.config.erb"
+  notifies :restart, resources(:service => "collectd"), :delayed
+  variables(
+    :sketchy_hostname => "#{node['rightscale']['servers']['sketchy']['hostname']}",
+    :plugins => node.rs_utils.plugin_list_ary,
+    :instance_uuid => node['rightscale']['instance_uuid'],
+    :collectd_include_dir => node['rs_utils']['collectd_plugin_dir']
+  )
 end
 
 # exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
@@ -63,27 +83,6 @@ package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
 
 service "collectd" do
   action :enable  # ensure the service is enabled
-end
-
-# collectd main configuration file
-template node['rs_utils']['collectd_config'] do
-  backup 5
-  source "collectd.config.erb"
-  notifies :restart, resources(:service => "collectd"), :delayed
-  variables(
-    :sketchy_hostname => "#{node['rightscale']['servers']['sketchy']['hostname']}",
-    :plugins => node.rs_utils.plugin_list_ary,
-    :instance_uuid => node['rightscale']['instance_uuid'],
-    :collectd_include_dir => node['rs_utils']['collectd_plugin_dir']
-  )
-end
-
-# plugin conf dir
-directory "#{node['rs_utils']['collectd_plugin_dir']}" do
-  owner "root"
-  group "root"
-  recursive true
-  action :create
 end
 
 # install a nightly cron to restart collectd
