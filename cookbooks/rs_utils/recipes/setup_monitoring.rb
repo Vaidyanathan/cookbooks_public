@@ -51,6 +51,10 @@ directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   action :create
 end
 
+service "collectd" do
+  action :nothing
+end
+
 # collectd main configuration file
 template node['rs_utils']['collectd_config'] do
   backup 5
