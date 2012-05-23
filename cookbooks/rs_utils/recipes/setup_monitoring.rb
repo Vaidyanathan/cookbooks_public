@@ -68,6 +68,18 @@ template node['rs_utils']['collectd_config'] do
   )
 end
 
+# == Monitor Processes from Script Input 
+# Write the process file into the include directory from template.
+template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
+  backup false
+  source "processes.conf.erb"
+  notifies :restart, resources(:service => "collectd"), :delayed
+  variables(
+    :monitor_procs => node.rs_utils.process_list_ary,
+    :procs_match => node['rs_utils.process_match_list']
+  )
+end
+
 # exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
 if node['platform'] =~ /redhat|centos/
   execute "yum_exclude_package_collectd" do
@@ -95,18 +107,6 @@ cron "collectd" do
   command "service collectd restart > /dev/null"
   minute "00"
   hour   "4"
-end
-
-# == Monitor Processes from Script Input 
-# Write the process file into the include directory from template.
-template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
-  backup false
-  source "processes.conf.erb"
-  notifies :restart, resources(:service => "collectd"), :delayed
-  variables(
-    :monitor_procs => node.rs_utils.process_list_ary,
-    :procs_match => node['rs_utils.process_match_list']
-  )
 end
 
 # set rs monitoring tag to active
