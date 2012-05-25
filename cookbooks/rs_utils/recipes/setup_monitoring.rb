@@ -27,6 +27,27 @@ log 'Setup RightScale monitoring.'
 return if ( platform?('archlinux') or platform?('mac_os_x') )
 return unless defined?(RightScale)
 
+# exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
+if node['platform'] =~ /redhat|centos/
+  execute "yum_exclude_package_collectd" do
+    only_if '[ -e /etc/yum.repos.d/Epel.repo ] && grep epel /etc/yum.repos.d/Epel.repo && ! grep "exclude=collectd" /etc/yum.repos.d/Epel.repo > /dev/null 2>&1'
+    command 'echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo'
+  end
+end
+
+package "collectd"
+
+# notify custom init script (to enable collectdmon)for redhat/centos)
+package "collectd" do
+  notifies :create, resources(:remote_file => "/etc/init.d/collectd"), :immediately
+end if node['platform'] =~ /redhat|centos/
+
+package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
+
+service "collectd" do
+  action :enable  # ensure the service is enabled
+end
+
 # patch collectd init script, so it uses collectdmon.  
 # only needed for CentOS, Ubuntu already does this out of the box.
 remote_file "/etc/init.d/collectd" do
@@ -51,15 +72,12 @@ directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   action :create
 end
 
-service "collectd" do
-  action :nothing
-end
-
 # collectd main configuration file
 template node['rs_utils']['collectd_config'] do
   backup 5
   source "collectd.config.erb"
-  notifies :restart, resources(:service => "collectd"), :delayed
+  notifies :enable, "service[collectd]"
+  notifies :restart, "service[collectd]", :delayed
   variables(
     :sketchy_hostname => "#{node['rightscale']['servers']['sketchy']['hostname']}",
     :plugins => node.rs_utils.plugin_list_ary,
@@ -78,27 +96,6 @@ template File.join(node['rs_utils']['collectd_plugin_dir'], 'processes.conf') do
     :monitor_procs => node.rs_utils.process_list_ary,
     :procs_match => node['rs_utils.process_match_list']
   )
-end
-
-# exclude collectd package so it can't be installed from epel (yum on redhat/centos only)
-if node['platform'] =~ /redhat|centos/
-  execute "yum_exclude_package_collectd" do
-    only_if '[ -e /etc/yum.repos.d/Epel.repo ] && grep epel /etc/yum.repos.d/Epel.repo && ! grep "exclude=collectd" /etc/yum.repos.d/Epel.repo > /dev/null 2>&1'
-    command 'echo -e "\n# Do not allow collectd version to be modified.\nexclude=collectd\n" >> /etc/yum.repos.d/Epel.repo'
-  end
-end
-
-package "collectd"
-
-# notify custom init script (to enable collectdmon)for redhat/centos)
-package "collectd" do
-  notifies :create, resources(:remote_file => "/etc/init.d/collectd"), :immediately
-end if node['platform'] =~ /redhat|centos/
-
-package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
-
-service "collectd" do
-  action :enable  # ensure the service is enabled
 end
 
 # install a nightly cron to restart collectd
