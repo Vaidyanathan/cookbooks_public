@@ -9,6 +9,8 @@
 #
 rs_utils_marker :begin
 
+( log "Unrecognized distro #{node['platform']}, exiting."; exit 1) unless node['platform'] = 'centos'
+
 node[:db][:provider] = "db_postgres"
 version="#{node[:db_postgres][:version]}"
 
