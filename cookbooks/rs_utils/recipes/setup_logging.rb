@@ -92,4 +92,8 @@ end unless node['rs_utils']['logrotate_config'] == nil
 file "/var/log/boot.log" 
 
 # tag required to activate logging
-right_link_tag "rs_logging:state=active"
+begin
+   right_link_tag "rs_logging:state=active"
+ rescue
+   log("Failed setting RightScale tag, rs_logging:state=active") { level :debug }
+ end
