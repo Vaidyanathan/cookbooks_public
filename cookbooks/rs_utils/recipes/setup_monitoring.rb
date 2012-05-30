@@ -104,8 +104,12 @@ cron "collectd" do
 end
 
 # set rs monitoring tag to active
-if node.has_key? :rightscale
-  right_link_tag "rs_monitoring:state=active"
+if node.has_key? :rightscale  
+  begin
+    right_link_tag "rs_monitoring:state=active"
+  rescue
+    log("Failed setting RightScale tag, rs_monitoring:state=active") { level :debug }
+  end  
 end
 
 log "RightScale monitoring setup complete."
