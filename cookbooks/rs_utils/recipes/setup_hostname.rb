@@ -43,7 +43,7 @@ ruby_block "show_host_info" do
     Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
     Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
     Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
-    Chef::Log.info("Current Ohai FQDN: #{node['fqdn']}")
+    Chef::Log.info("Current Chef FQDN loaded from Ohai: #{node['fqdn']}")
   end
   action :nothing
 end
