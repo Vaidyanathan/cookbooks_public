@@ -60,8 +60,6 @@ end
 directory "/etc/collectd" do
   owner "root"
   group "root"
-  recursive true
-  action :create
 end
 
 # == Create plugin conf dir
@@ -69,7 +67,6 @@ directory "#{node['rs_utils']['collectd_plugin_dir']}" do
   owner "root"
   group "root"
   recursive true
-  action :create
 end
 
 # collectd main configuration file
