@@ -31,3 +31,19 @@ h = rs_utils_hostname "set_system_hostname" do
 end
 
 h.run_action(:set)
+
+# Show the new host/node information (after ohai reload from provider)
+ruby_block "show_host_info" do
+  block do
+    # show new host values from system
+    Chef::Log.info("== New host/node information ==")
+    Chef::Log.info("Hostname: #{`hostname`.strip == '' ? '<none>' : `hostname`.strip}")
+    Chef::Log.info("Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}")
+    Chef::Log.info("Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}")
+    Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}")
+    Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
+    Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
+    Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
+    Chef::Log.info("Current Chef FQDN loaded from Ohai: #{node['fqdn']}")
+  end
+end
