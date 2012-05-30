@@ -105,4 +105,6 @@ script "set_node_hostname_tag" do
   EOH
 end
 
+new_resource.updated_by_last_action(true)
+
 end # close action :set
