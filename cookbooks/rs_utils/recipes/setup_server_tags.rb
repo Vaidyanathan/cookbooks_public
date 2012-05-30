@@ -43,7 +43,11 @@ i=0
 while node['cloud']['private_ips'] && node.cloud.private_ips[i] do 
   ip = node['cloud']['private_ips'][i]
   log "Adding private ip tag for ip address #{ip}."
-  right_link_tag "server:private_ip_#{i}=#{ip}" if defined?(RightScale)
+  begin
+    right_link_tag "server:private_ip_#{i}=#{ip}" if defined?(RightScale) if defined?(RightScale)
+  rescue
+    log("Failed setting RightScale tag, server:private_ip_#{i}=#{ip}") { level :debug }
+  end
   i += 1
 end
 # Add a tag for each public IP address
@@ -51,7 +55,11 @@ i=0
 while node['cloud']['public_ips'] && node['cloud']['public_ips'][i] do 
   ip = node['cloud']['public_ips'][i]
   log "Adding public ip tag for ip address #{ip}."
-  right_link_tag "server:public_ip_#{i}=#{ip}"
+  begin
+    right_link_tag "server:public_ip_#{i}=#{ip}"
+  rescue
+    log("Failed setting RightScale tag, server:public_ip_#{i}=#{ip}") { level :debug }
+  end
   i += 1
 end
 
