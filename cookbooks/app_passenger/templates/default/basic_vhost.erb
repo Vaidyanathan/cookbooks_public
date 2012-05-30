@@ -1,11 +1,15 @@
 #
-# Apache HTTP-only virtual host Config file, version 1.
+# Cookbook Name:: app_passenger
+#
+# Copyright RightScale, Inc. All rights reserved.  All access and use subject to the
+# RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
+# if applicable, other agreements such as a RightScale Master Subscription Agreement.
 #
 # Managed by RightScale
 # DO NOT EDIT BY HAND
 #
-
-
+# Apache HTTP-only virtual host Config file
+#
 
 <VirtualHost *:<%=@params[:vhost_port]%>>
 
@@ -41,6 +45,8 @@ RailsEnv <%= @params[:rails_env] %>
 
 PassengerAppRoot <%="#{@params[:destination].chomp}"%>
 
+PassengerUser <%=@params[:passenger_user]%>
+PassengerGroup <%=@params[:passenger_group]%>
 
 # Enable status page for monitoring purposes
 RewriteCond %{REMOTE_ADDR} ^(127.0.0.1)

@@ -5,7 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-rs_utils_marker :begin
+rightscale_marker :begin
 
 # Run specific to application user defined commands
 # for example  rake gem:install or rake db:create
@@ -19,7 +19,7 @@ rs_utils_marker :begin
 log "  Running user defined commands"
 bash "run commands" do
   flags "-ex"
-  cwd "#{node[:app_passenger][:deploy_dir]}/"
+  cwd "#{node[:app][:destination]}/"
   code <<-EOH
     IFS=,  read -a ARRAY1 <<< "#{node[:app_passenger][:project][:custom_cmd]}"
     for i in "${ARRAY1[@]}"
@@ -31,4 +31,4 @@ bash "run commands" do
   only_if do (node[:app_passenger][:project][:custom_cmd]!="") end
 end
 
-rs_utils_marker :end
+rightscale_marker :end

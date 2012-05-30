@@ -5,7 +5,7 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-rs_utils_marker :begin
+rightscale_marker :begin
 
 # Installing bundler
 gem_package "bundler" do
@@ -18,13 +18,13 @@ end
 # the required gems using "bundle install" command.
 #
 log "  Bundler will install gems from Gemfile"
-
+# Installing gems from /Gemfile if it exists
 bash "Bundle gem install" do
   flags "-ex"
   code <<-EOH
-    /opt/ruby-enterprise/bin/bundle install --gemfile=#{node[:app_passenger][:deploy_dir]}/Gemfile
+    /opt/ruby-enterprise/bin/bundle install --gemfile=#{node[:app][:destination]}/Gemfile
   EOH
-  only_if do File.exists?("#{node[:app_passenger][:deploy_dir]}/Gemfile")  end
+  only_if do File.exists?("#{node[:app][:destination]}/Gemfile")  end
 end
 
-rs_utils_marker :end
+rightscale_marker :end
