@@ -57,13 +57,24 @@ execute "ensure_dev_null.syslog-ng" do
   command "mknod /dev/null.syslog-ng c 1 3"
 end
 
+begin
+  lumberjack_host = node['rightscale']['servers']['lumberjack']['hostname']
+rescue
+  lumberjack_host = ""
+end
+begin
+  lumberjack_identifier = node['rightscale']['servers']['lumberjack']['identifier']
+rescue
+  lumberjack_identifier = ""
+end
+
 # == Configure syslog
 template "/etc/syslog-ng/syslog-ng.conf" do
   source "syslog.erb"
   variables ({
     :apache_log_dir => (node['platform'] == 'centos') ? "httpd" : "apache2",
-    :lumberjack_host => "#{node['rightscale']['servers']['lumberjack']['hostname']}",
-    :lumberjack_identifier => "#{node['rightscale']['servers']['lumberjack']['identifier']}"
+    :lumberjack_host => "#{lumberjack_host}",
+    :lumberjack_identifier => "#{lumberjack_identifier}"
   })
   notifies :restart, resources(:service => "syslog-ng")
 end
