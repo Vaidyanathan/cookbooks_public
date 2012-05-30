@@ -105,9 +105,4 @@ script "set_node_hostname_tag" do
   EOH
 end
 
-# reload ohai hostname plugin for subsequent recipes in the run_list
-ohai "reload_hostname_info_from_ohai" do
-  plugin "hostname"
-end
-
 end # close action :set

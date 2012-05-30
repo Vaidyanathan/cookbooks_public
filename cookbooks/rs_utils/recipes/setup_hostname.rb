@@ -24,10 +24,11 @@
 
 ( log 'Setting hostname on OS X not supported.' and return ) if node['platform'] == 'mac_os_x'
 
-rs_utils_hostname "set_system_hostname" do
-  short_hostname node['rs_utils']['short_hostname']
-  domain_name node['rs_utils']['domain_name']
-  action :set
+# reload ohai hostname plugin for subsequent recipes in the run_list
+ohai "reload_hostname_info_from_ohai" do
+  plugin "hostname"
+  action :nothing
+  notifies :create, "ruby_block[show_host_info]", :immediately
 end
 
 # Show the new host/node information (after ohai reload from provider)
@@ -42,6 +43,14 @@ ruby_block "show_host_info" do
     Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
     Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
     Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
+    Chef::Log.info("Current Ohai FQDN: #{node['fqdn']}")
   end
-  action :create
+  action :nothing
+end
+
+rs_utils_hostname "set_system_hostname" do
+  short_hostname node['rs_utils']['short_hostname']
+  domain_name node['rs_utils']['domain_name']
+  action :set
+  notifies :reload, "ohai[reload_hostname_info_from_ohai]", :immediately
 end
