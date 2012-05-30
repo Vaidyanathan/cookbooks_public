@@ -68,7 +68,7 @@ rescue
   lumberjack_identifier = ""
 end
 
-( log "exiting setup_logging early as no lumberjack host found"; return) if lumberjack_host = ""
+( log "exiting setup_logging early as no lumberjack host found" and return) if lumberjack_host == ""
 
 # == Configure syslog
 template "/etc/syslog-ng/syslog-ng.conf" do
