@@ -28,5 +28,4 @@ rs_utils_hostname "set_system_hostname" do
   short_hostname node['rs_utils']['short_hostname']
   domain_name node['rs_utils']['domain_name']
   action :set
-  notifies :reload, "ohai[reload_hostname_info_from_ohai]", :immediately
 end
