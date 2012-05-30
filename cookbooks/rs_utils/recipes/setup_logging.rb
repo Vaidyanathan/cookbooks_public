@@ -48,7 +48,7 @@ end
 package "syslog-ng"
 
 service "syslog-ng" do
-  action :start
+  action :nothing
 end
 
 # /dev/null for syslog-ng
@@ -78,7 +78,7 @@ template "/etc/syslog-ng/syslog-ng.conf" do
     :lumberjack_host => "#{lumberjack_host}",
     :lumberjack_identifier => "#{lumberjack_identifier}"
   })
-  notifies :restart, resources(:service => "syslog-ng")
+  notifies :restart, resources(:service => "syslog-ng"), :delayed
 end
 
 # ensure everything in /var/log is owned by root, not syslog
