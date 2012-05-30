@@ -39,7 +39,7 @@ i=0
 while node['cloud']['private_ips'] && node.cloud.private_ips[i] do 
   ip = node['cloud']['private_ips'][i]
   log "Adding private ip tag for ip address #{ip}."
-  right_link_tag "server:private_ip_#{i}=#{ip}"
+  right_link_tag "server:private_ip_#{i}=#{ip}" if defined?(RightScale)
   i += 1
 end
 # Add a tag for each public IP address
