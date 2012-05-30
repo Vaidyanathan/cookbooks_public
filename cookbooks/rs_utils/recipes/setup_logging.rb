@@ -61,7 +61,9 @@ end
 template "/etc/syslog-ng/syslog-ng.conf" do
   source "syslog.erb"
   variables ({
-    :apache_log_dir => (node[:platform] == "centos") ? "httpd" : "apache2"
+    :apache_log_dir => (node['platform'] == 'centos') ? "httpd" : "apache2",
+    :lumberjack_host => "#{node['rightscale']['servers']['lumberjack']['hostname']}",
+    :lumberjack_identifier => "#{node['rightscale']['servers']['lumberjack']['identifier']}"
   })
   notifies :restart, resources(:service => "syslog-ng")
 end
