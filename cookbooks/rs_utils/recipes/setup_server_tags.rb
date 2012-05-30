@@ -31,7 +31,11 @@ end
 
 # RightScale unique identifier
 log "Adding server tag for UUID #{node['rightscale']['instance_uuid']}."
-right_link_tag "server:uuid=#{node['rightscale']['instance_uuid']}" if defined?(RightScale)
+begin
+  right_link_tag "server:uuid=#{node['rightscale']['instance_uuid']}" if defined?(RightScale)
+rescue
+  log("Failed setting RightScale tag, server:uuid=#{node['rightscale']['instance_uuid']}") { level :debug }
+end
 
 # these are cloud-dependent (and on supported clouds only, TODO generics)
 # Add a tag for each private IP address
