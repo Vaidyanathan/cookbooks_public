@@ -5,33 +5,70 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-rs_utils_marker :begin
+rightscale_marker :begin
 
 log "  Setting provider specific settings for php application server."
-
 node[:app][:provider] = "app_php"
-node[:app][:port] = 8000
-node[:app][:destination]="#{node[:web_apache][:docroot]}"
 
+# Preparing list of database adapter packages depending on platform and database adapter
 case node[:platform]
 when "ubuntu", "debian"
-  if node[:php][:db_adapter] == "mysql"
-    node[:app][:packages] = ["php5", "php5-mysql", "php-pear", "libapache2-mod-php5"]
-  elsif node[:php][:db_adapter] == "postgresql"
-    node[:app][:packages] = ["php5", "php5-pgsql", "php-pear", "libapache2-mod-php5"]
+  if node[:app_php][:db_adapter] == "mysql"
+    node[:app][:packages] = [
+      "php5",
+      "php5-mysql",
+      "php-pear",
+      "libapache2-mod-php5"
+    ]
+  elsif node[:app_php][:db_adapter] == "postgresql"
+    node[:app][:packages] = [
+      "php5",
+      "php5-pgsql",
+      "php-pear",
+      "libapache2-mod-php5"
+    ]
   else
     raise "Unrecognized database adapter #{node[:app][:db_adapter]}, exiting "
   end
 when "centos","fedora","suse","redhat"
-  if node[:php][:db_adapter] == "mysql"
-    node[:php][:packages] = ["php53u", "php53u-mysql", "php53u-pear", "php53u-zts"]
-  elsif node[:php][:db_adapter] == "postgresql"
-    node[:app][:packages] = ["php53u", "php53u-pgsql", "php53u-pear", "php53u-zts"]
+  if node[:app_php][:db_adapter] == "mysql"
+    node[:app][:packages] = [
+      "php53u",
+      "php53u-mysql",
+      "php53u-pear",
+      "php53u-zts"
+    ]
+  elsif node[:app_php][:db_adapter] == "postgresql"
+    node[:app][:packages] = [
+      "php53u",
+      "php53u-pgsql",
+      "php53u-pear",
+      "php53u-zts"
+    ]
   else
-    raise "Unrecognized database adapter #{node[:php][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:app_php][:db_adapter]}, exiting "
   end
 else
   raise "Unrecognized distro #{node[:platform]}, exiting "
 end
 
-rs_utils_marker :end
+
+log " Preparing php document root variable"
+dest_dir="/home/php/webapps"
+if node[:repo][:default][:destination].empty?
+  log "  Your repo/default/destination input is no set. Setting project root to default: #{dest_dir}"
+  project_home = dest_dir
+else
+  project_home = node[:repo][:default][:destination]
+end
+
+# Setting app LWRP attribute
+node[:app][:root] = "#{project_home}/#{node[:web_apache][:application_name]}"
+# PHP shares the same doc root with the application destination
+node[:app][:destination]="#{node[:app][:root]}"
+
+directory "#{node[:app][:destination]}" do
+  recursive true
+end
+
+rightscale_marker :end

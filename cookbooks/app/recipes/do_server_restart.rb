@@ -5,12 +5,14 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-rs_utils_marker :begin
+# This recipe will call "restart" action of "app" LightWeight resource
+#  For more info please see "restart" action definition in connected LightWeight provider (ex. app_php/providers/default.rb)
+
+rightscale_marker :begin
 
 log "  Restarting application server now..."
 app "default" do
-    action :restart
-    persist true
+  action :restart
 end
 
-rs_utils_marker :end
+rightscale_marker :end

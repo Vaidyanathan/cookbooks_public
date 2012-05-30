@@ -5,17 +5,16 @@
 # RightScale Terms of Service available at http://www.rightscale.com/terms.php and,
 # if applicable, other agreements such as a RightScale Master Subscription Agreement.
 
-rs_utils_marker :begin
+rightscale_marker :begin
 
 log "  Setting provider specific settings for tomcat"
-
 node[:app][:provider] = "app_tomcat"
-node[:app][:database_name] = node[:tomcat][:db_name]
-node[:app][:port] = 8000
+node[:app][:database_name] = node[:app_tomcat][:db_name]
 
+# Preparing list of database adapter packages depending on platform and database adapter
 case node[:platform]
 when "ubuntu", "debian"
-  case node[:tomcat][:db_adapter]
+  case node[:app_tomcat][:db_adapter]
   when "mysql"
     node[:app][:packages] = [
       "ecj-gcj",
@@ -38,10 +37,10 @@ when "ubuntu", "debian"
       "libtcnative-1"
     ]
   else
-    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:app_tomcat][:db_adapter]}, exiting "
   end
 when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
-  case node[:tomcat][:db_adapter]
+  case node[:app_tomcat][:db_adapter]
   when "mysql"
     node[:app][:packages] = [
       "eclipse-ecj",
@@ -60,10 +59,29 @@ when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
       "tomcat-native"
     ]
   else
-    raise "Unrecognized database adapter #{node[:tomcat][:db_adapter]}, exiting "
+    raise "Unrecognized database adapter #{node[:app_tomcat][:db_adapter]}, exiting "
   end
 else
   raise "Unrecognized distro #{node[:platform]}, exiting "
 end
 
-rs_utils_marker :end
+
+log " Preparing tomcat document root variable"
+dest_dir = "/srv/tomcat6/webapps/"
+if node[:repo][:default][:destination].empty?
+  log "  Your repo/default/destination input is no set. Setting project root to default: #{dest_dir}"
+  project_home = dest_dir
+else
+  project_home = node[:repo][:default][:destination]
+end
+
+# Setting app LWRP attribute
+node[:app][:root] = "#{project_home}/#{node[:web_apache][:application_name]}"
+# tomcat shares the same doc root with the application destination
+node[:app][:destination]="#{node[:app][:root]}"
+
+directory "#{node[:app][:destination]}" do
+  recursive true
+end
+
+rightscale_marker :end
