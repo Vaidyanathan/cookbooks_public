@@ -123,14 +123,10 @@ ruby_block "show_host_info" do
 end
 
 # reload ohai hostname plugin for subsequent recipes in the run_list
-o = ohai "reload_hostname_info_from_ohai" do
+ohai "reload_hostname_info_from_ohai" do
   plugin "hostname"
-  action :nothing
   notifies :create, "ruby_block[show_host_info]", :immediately
 end
-
-log "Refreshing host information."
-o.run_action(:reload)
 
 new_resource.updated_by_last_action(true)
 

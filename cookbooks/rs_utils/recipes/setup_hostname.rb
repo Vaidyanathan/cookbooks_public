@@ -24,8 +24,10 @@
 
 ( log 'Setting hostname on OS X not supported.' and return ) if node['platform'] == 'mac_os_x'
 
-rs_utils_hostname "set_system_hostname" do
+h = rs_utils_hostname "set_system_hostname" do
   short_hostname node['rs_utils']['short_hostname']
   domain_name node['rs_utils']['domain_name']
-  action :set
+  action :nothing
 end
+
+h.run_action(:set)
