@@ -62,8 +62,6 @@ when "debian","ubuntu"
   set[:db_mysql][:socket] = "/var/run/mysqld/mysqld.sock"
   set_unless[:db_mysql][:log] = "log = /var/log/mysql.log"
   set_unless[:db_mysql][:log_error] = "log_error = /var/log/mysql.err" 
-else
-  raise "Unsupported platform #{platform}"
 end
 
 # System tuning parameters
