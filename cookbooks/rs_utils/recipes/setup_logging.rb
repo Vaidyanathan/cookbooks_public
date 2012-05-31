@@ -29,6 +29,9 @@ unless defined?(RightScale)
   return
 end
 
+# for some reason the package resource returns Platform archlinux not found, using all defaults. (Unsupported platform?) on arch atm.
+( log "setup_logging not yet supported on archlinux" and return) if node['platform'] == 'archlinux'
+
 # todo: add a return if in non-EC2 as only ec2 is supported for lumberjacks at this time
 
 # == rsyslog usually conflicts and should be removed first (via package manager; known kernel proc kill in centos)
