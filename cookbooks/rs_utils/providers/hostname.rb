@@ -68,13 +68,13 @@ else
 end
 
 # Call domainname command
-if ( !node['rs_utils']['domain_name'].nil? || node['rs_utils']['domain_name'] != "" )
+if node['platform'] != 'archlinux' and ( !node['rs_utils']['domain_name'].nil? || node['rs_utils']['domain_name'] != "" )
   log('Running domainname') { level :debug }
   bash "set_domainname" do
     code <<-EOH
     domainname #{node['rs_utils']['domain_name']}
     EOH
-  end unless node['platform'] == 'archlinux'
+  end
 end
 
 # restart hostname services on appropriate platforms
