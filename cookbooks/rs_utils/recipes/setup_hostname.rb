@@ -41,7 +41,7 @@ ruby_block "show_host_info" do
     Chef::Log.info("Network node hostname: #{`uname -n`.strip == '' ? '<none>' : `uname -n`.strip}")
     Chef::Log.info("Alias names of host: #{`hostname -a`.strip == '' ? '<none>' : `hostname -a`.strip}")
     Chef::Log.info("Short host name (cut from first dot of hostname): #{`hostname -s`.strip == '' ? '<none>' : `hostname -s`.strip}")
-    Chef::Log.info("Domain of hostname: #{`domainname`.strip == '' ? '<none>' : `domainname`.strip}")
+    Chef::Log.info("Domain of hostname: #{`hostname -d`.strip == '' ? '<none>' : `hostname -d`.strip}")
     Chef::Log.info("FQDN of host: #{`hostname -f`.strip == '' ? '<none>' : `hostname -f`.strip}")
     Chef::Log.info("IP addresses for the hostname: #{`hostname -i`.strip == '' ? '<none>' : `hostname -i`.strip}")
     Chef::Log.info("Current Chef FQDN loaded from Ohai: #{node['fqdn']}")
