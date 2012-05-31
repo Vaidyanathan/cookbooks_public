@@ -24,8 +24,6 @@ case node[:platform]
     set[:app_passenger][:apache][:user]="apache"
     set[:app_passenger][:apache][:group]="apache"
     set[:app_passenger][:apache][:log_dir]="/var/log/httpd"
-  else
-    raise "Unrecognized distro #{node[:platform]}, exiting "
 end
 
 # Path to Ruby EE gem directory
