@@ -49,6 +49,4 @@ when "centos", "fedora", "suse", "redhat", "redhatenterpriseserver"
   else
     raise "Unrecognized database adapter #{node[:app_tomcat][:db_adapter]}, exiting "
   end
-else
-  raise "Unrecognized distro #{node[:platform]}, exiting "
 end
