@@ -10,5 +10,20 @@
 set_unless[:app][:provider] = "app"
 # By default listen on port 8000
 set_unless[:app][:port] = "8000"
+
 # By default listen on the first private IP
-set_unless[:app][:ip] = node[:cloud][:private_ips][0]
+def local_ip
+  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
+  UDPSocket.open do |s|
+    s.connect '64.233.187.99', 1
+    s.addr.last
+  end
+  ensure
+    Socket.do_not_reverse_lookup = orig
+end
+
+if node['cloud']
+  default[:app][:ip] = node[:cloud][:private_ips][0]
+else
+  default[:app][:ip] = local_ip
+end

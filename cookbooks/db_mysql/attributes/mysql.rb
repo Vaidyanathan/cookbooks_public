@@ -25,7 +25,22 @@ set_unless[:db_mysql][:tmpdir] = "/mnt/ephemeral/tmp"
 set_unless[:db_mysql][:datadir] = "/var/lib/mysql"
 set_unless[:db_mysql][:datadir_relocate] = "/mnt/storage"
 # Always set to support stop/start
-set[:db_mysql][:bind_address] = cloud[:private_ips][0]
+# By default listen on the first private IP
+def local_ip
+  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
+  UDPSocket.open do |s|
+    s.connect '64.233.187.99', 1
+    s.addr.last
+  end
+  ensure
+    Socket.do_not_reverse_lookup = orig
+end
+
+if node['cloud']
+  set[:db_mysql][:bind_address] = cloud[:private_ips][0]
+else
+  set[:db_mysql][:bind_address]  = local_ip
+end
 
 set_unless[:db_mysql][:dump][:schema_name] = ""
 set_unless[:db_mysql][:dump][:storage_account_provider] = ""
