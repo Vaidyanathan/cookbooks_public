@@ -32,7 +32,7 @@ def local_ip
 end
 
 if node['cloud']
-  default[:db_postgres][:bind_address]] = cloud[:private_ips][0]
+  default[:db_postgres][:bind_address] = cloud[:private_ips][0]
 else
   default[:db_postgres][:bind_address]  = local_ip
 end
