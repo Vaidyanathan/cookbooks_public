@@ -35,6 +35,15 @@ if node['platform'] =~ /redhat|centos/
   end
 end
 
+# patch collectd init script, so it uses collectdmon.  
+# only needed for CentOS, Ubuntu already does this out of the box.
+remote_file "/etc/init.d/collectd" do
+  source "collectd-init-centos-with-monitor"
+  mode 0755
+  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
+  action :nothing
+end
+
 package "collectd"
 
 # notify custom init script (to enable collectdmon)for redhat/centos)
@@ -46,15 +55,6 @@ package "librrd4" if platform?('ubuntu')  # add rrd library for ubuntu
 
 service "collectd" do
   action :enable  # ensure the service is enabled
-end
-
-# patch collectd init script, so it uses collectdmon.  
-# only needed for CentOS, Ubuntu already does this out of the box.
-remote_file "/etc/init.d/collectd" do
-  source "collectd-init-centos-with-monitor"
-  mode 0755
-  only_if "which collectdmon > /dev/null 2>&1"   # only when collectdmon is found installed
-  action :nothing
 end
 
 directory "/etc/collectd" do
